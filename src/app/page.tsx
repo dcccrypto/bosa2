@@ -851,12 +851,11 @@ export default function Component() {
         <motion.div 
           className="flex items-center py-1.5 px-2"
           animate={socialControls}
-          style={{ width: "fit-content" }}
+          style={{ width: "max-content" }}
         >
           <div className="flex items-center gap-6 min-w-max">
             {[
               { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
-              { icon: "/assets/xlogo.png", text: "X", link: socialLinks.twitter, size: 22 },
               { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
               { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
               { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
@@ -876,6 +875,11 @@ export default function Component() {
                 comingSoon: true,
                 size: 22
               },
+              // Duplicate the items for seamless scrolling
+              { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
+              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
+              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
+              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
             ].map((item, index) => (
               <a 
                 key={index}
