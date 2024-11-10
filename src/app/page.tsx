@@ -52,17 +52,20 @@ const socialLinks = {
 
 // Update the pie chart colors and styles
 const pieChartStyle = {
-  lineWidth: 60,
+  lineWidth: 40, // Slightly thinner width for a sleeker look
   animate: true,
-  animationDuration: 1000,
-  animationEasing: "ease-out",
+  animationDuration: 1200, // Slightly longer duration for smoother animation
+  animationEasing: "ease-in-out", // Softer easing effect for a gradual animation
   radius: 50,
-  labelPosition: 75,
+  labelPosition: 80, // Slightly farther out for better visibility
   labelStyle: {
-    fontSize: "8px",
+    fontSize: "10px", // Larger font size for better readability
     fontWeight: "bold",
-    fill: "#fff",
-  }
+    fill: "#FFFFFF", // Ensures contrast against the chart colors
+    textShadow: "0px 0px 5px rgba(0, 0, 0, 0.3)" // Adds a subtle shadow for clarity
+  },
+  colors: ["#4A90E2", "#50E3C2"], // Modern color scheme
+  backgroundColor: "transparent", // Ensures it blends with the page background
 };
 
 function Sparkles({ children }: { children: React.ReactNode }) {
@@ -242,7 +245,13 @@ export default function Component() {
     };
     
     animate();
-  }, [socialControls]);
+
+    return () => {
+      controls.stop()
+      orbitControls.stop()
+      socialControls.stop()
+    }
+  }, [socialControls, controls, orbitControls]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(contractAddress)
@@ -346,11 +355,11 @@ export default function Component() {
             {/* Desktop Social Icons */}
             <div className="hidden md:flex items-center gap-6">
               <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" className="relative group p-2">
-                <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" alt="Telegram" width={36} height={36} className="relative z-10" />
+                <Image src="/assets/telegramlogo.png" alt="Telegram" width={36} height={36} className="relative z-10" />
                 <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 rounded-full backdrop-blur-sm transition-all duration-200" />
               </a>
-              <a href="#" className="relative group p-2">
-                <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" alt="X (Twitter)" width={32} height={32} className="relative z-10" />
+              <a href={socialLinks.twitter} className="relative group p-2">
+                <Image src="/assets/xlogo.png" alt="X (Twitter)" width={32} height={32} className="relative z-10" />
                 <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 rounded-full backdrop-blur-sm transition-all duration-200" />
               </a>
               <a href="#" className="relative group p-2">
@@ -464,33 +473,6 @@ export default function Component() {
           </AnimatePresence>
         </div>
       </nav>
-
-      {/* Hero Image Section - Moved to top, right after nav */}
-      <div className="relative w-full flex justify-center items-center py-12 mt-8">
-        <Sparkles>
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20
-            }}
-            className="relative group"
-          >
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
-            <div className="relative">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-S3j8xrPUmlkpDVENpM943XrwtlnxYN.png"
-                alt="Bosa Hero"
-                width={200}
-                height={200}
-                className="rounded-full transform hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-          </motion.div>
-        </Sparkles>
-      </div>
 
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-6 pt-28">
@@ -966,204 +948,6 @@ export default function Component() {
           </div>
         </div>
       </footer>
-
-      {/* After the footer and before the scrolling bottom bar */}
-      <div className="fixed bottom-16 right-4 max-w-sm backdrop-blur-lg bg-black/30 rounded-lg p-4 shadow-xl border border-white/10">
-        <div className="flex flex-col gap-3">
-          <div className="text-white">
-            <p className="text-sm font-medium">Looking for a stunning website for your memecoin?</p>
-            <p className="text-xs text-white/70">This website was crafted by me! Reach out for professional web development services.</p>
-          </div>
-          <div className="flex gap-2">
-            <a 
-              href="https://t.me/plug2k" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 bg-blue-600/80 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
-            >
-              <Image 
-                src="/assets/telegramlogo.png" 
-                alt="Telegram" 
-                width={16} 
-                height={16} 
-              />
-              <span>Contact on Telegram</span>
-            </a>
-            <a 
-              href="https://x.com/dcc_crypto" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 bg-black hover:bg-black/80 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
-            >
-              <Image 
-                src="/assets/xlogo.png" 
-                alt="X (Twitter)" 
-                width={14} 
-                height={14} 
-              />
-              <span>Follow on X</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Enhanced Scrolling Bottom Bar */}
-      <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 overflow-hidden h-10">
-        <div className="flex items-center" style={{ width: "max-content" }}>
-          <motion.div 
-            animate={socialControls}
-            className="flex items-center gap-6 py-1.5 px-2"
-            style={{ 
-              display: "flex",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {[
-              { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
-              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
-              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
-              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
-              { 
-                icon: "/assets/coingeckologo.png", 
-                text: "Soon", 
-                link: "#",
-                disabled: true,
-                comingSoon: true,
-                size: 22
-              },
-              { 
-                icon: "/assets/coinmarketcaplogo.png", 
-                text: "Soon", 
-                link: "#",
-                disabled: true,
-                comingSoon: true,
-                size: 22
-              }
-            ].map((item, index) => (
-              <a 
-                key={index}
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
-                className={`flex items-center gap-1.5 ${
-                  item.disabled 
-                    ? 'cursor-not-allowed opacity-50' 
-                    : 'hover:text-pink-300 hover:opacity-80'
-                } transition-all text-white relative group`}
-              >
-                <div className="relative">
-                  <Image 
-                    src={item.icon} 
-                    alt={item.text} 
-                    width={item.size} 
-                    height={item.size} 
-                    className={`${item.disabled ? 'grayscale' : ''}`}
-                  />
-                  {item.comingSoon && (
-                    <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-[7px] px-1 py-0.5 rounded-full">
-                      Soon
-                    </div>
-                  )}
-                </div>
-                <span className="text-[11px] font-medium hidden sm:inline whitespace-nowrap">
-                  {item.text}
-                </span>
-              </a>
-            ))}
-            {/* Duplicate items for seamless loop */}
-            {[
-              { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
-              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
-              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
-              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
-              { 
-                icon: "/assets/coingeckologo.png", 
-                text: "Soon", 
-                link: "#",
-                disabled: true,
-                comingSoon: true,
-                size: 22
-              },
-              { 
-                icon: "/assets/coinmarketcaplogo.png", 
-                text: "Soon", 
-                link: "#",
-                disabled: true,
-                comingSoon: true,
-                size: 22
-              }
-            ].map((item, index) => (
-              <a 
-                key={`duplicate-${index}`}
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
-                className={`flex items-center gap-1.5 ${
-                  item.disabled 
-                    ? 'cursor-not-allowed opacity-50' 
-                    : 'hover:text-pink-300 hover:opacity-80'
-                } transition-all text-white relative group`}
-              >
-                <div className="relative">
-                  <Image 
-                    src={item.icon} 
-                    alt={item.text} 
-                    width={item.size} 
-                    height={item.size} 
-                    className={`${item.disabled ? 'grayscale' : ''}`}
-                  />
-                  {item.comingSoon && (
-                    <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-[7px] px-1 py-0.5 rounded-full">
-                      Soon
-                    </div>
-                  )}
-                </div>
-                <span className="text-[11px] font-medium hidden sm:inline whitespace-nowrap">
-                  {item.text}
-                </span>
-              </a>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-
-      <div className="relative w-full flex justify-center items-center py-12">
-        <Sparkles>
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20
-            }}
-            className="relative group"
-          >
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
-            <motion.div
-              animate={{
-                rotate: [0, 360],
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              className="relative"
-            >
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/vercel.png"
-                alt="Vercel"
-                width={200}
-                height={200}
-                className="rounded-full transform hover:scale-105 transition-transform duration-300"
-              />
-            </motion.div>
-          </motion.div>
-        </Sparkles>
-      </div>
 
       {/* Static developer section */}
       <div className="w-full bg-black/30 backdrop-blur-lg py-8 border-t border-white/10">
