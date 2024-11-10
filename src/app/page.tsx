@@ -424,7 +424,7 @@ export default function Component() {
                 <div className="flex justify-center gap-4 pt-4 border-t border-white/10">
                   <a href="#" className="flex items-center gap-2 md:gap-3 text-white hover:text-pink-300 transition-colors">
                     <Image 
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
+                      src="/assets/telegramlogo.png" 
                       alt="Telegram" 
                       width={24} 
                       height={24} 
@@ -436,7 +436,7 @@ export default function Component() {
                   </a>
                   <a href="#" className="flex items-center gap-2 md:gap-3 text-white hover:text-pink-300 transition-colors">
                     <Image 
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
+                      src="/assets/xlogo.png" 
                       alt="Twitter" 
                       width={24} 
                       height={24} 
@@ -479,17 +479,7 @@ export default function Component() {
             className="relative group"
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
-            <motion.div
-              animate={{
-                rotate: [0, 360],
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              className="relative"
-            >
+            <div className="relative">
               <Image
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-S3j8xrPUmlkpDVENpM943XrwtlnxYN.png"
                 alt="Bosa Hero"
@@ -497,7 +487,7 @@ export default function Component() {
                 height={200}
                 className="rounded-full transform hover:scale-105 transition-transform duration-300"
               />
-            </motion.div>
+            </div>
           </motion.div>
         </Sparkles>
       </div>
@@ -844,7 +834,7 @@ export default function Component() {
                       onClick={() => window.open(socialLinks.telegram, '_blank')}
                     >
                       <Image 
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
+                        src="/assets/telegramlogo.png" 
                         alt="Telegram" 
                         width={28} 
                         height={28} 
@@ -858,7 +848,7 @@ export default function Component() {
                       onClick={() => window.open(socialLinks.twitter, '_blank')}
                     >
                       <Image 
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
+                        src="/assets/xlogo.png" 
                         alt="X (Twitter)" 
                         width={24} 
                         height={24} 
@@ -905,11 +895,11 @@ export default function Component() {
               <h3 className="text-white text-xl font-bold mb-4">Community</h3>
               <div className="flex flex-col gap-2">
                 <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
-                  <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" alt="Telegram" width={24} height={24} />
+                  <Image src="/assets/telegramlogo.png" alt="Telegram" width={24} height={24} />
                   Telegram
                 </a>
                 <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
-                  <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" alt="X (Twitter)" width={20} height={20} />
+                  <Image src="/assets/xlogo.png" alt="X (Twitter)" width={20} height={20} />
                   Twitter
                 </a>
                 <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
@@ -992,7 +982,7 @@ export default function Component() {
               className="flex items-center gap-1.5 bg-blue-600/80 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
             >
               <Image 
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
+                src="/assets/telegramlogo.png" 
                 alt="Telegram" 
                 width={16} 
                 height={16} 
@@ -1006,7 +996,7 @@ export default function Component() {
               className="flex items-center gap-1.5 bg-black hover:bg-black/80 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
             >
               <Image 
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
+                src="/assets/xlogo.png" 
                 alt="X (Twitter)" 
                 width={14} 
                 height={14} 
