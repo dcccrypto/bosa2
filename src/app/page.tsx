@@ -118,6 +118,55 @@ function Sparkles({ children }: { children: React.ReactNode }) {
   )
 }
 
+function DeveloperPopup({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="fixed bottom-16 right-4 max-w-sm backdrop-blur-lg bg-black/30 rounded-lg p-4 shadow-xl border border-white/10 z-50">
+      <button 
+        onClick={onClose}
+        className="absolute top-2 right-2 text-white/60 hover:text-white"
+      >
+        <X size={16} />
+      </button>
+      <div className="flex flex-col gap-3">
+        <div className="text-white">
+          <p className="text-sm font-medium">Looking for a stunning website for your memecoin?</p>
+          <p className="text-xs text-white/70">This website was crafted by me! Reach out for professional web development services.</p>
+        </div>
+        <div className="flex gap-2">
+          <a 
+            href="https://t.me/plug2k" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 bg-blue-600/80 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
+          >
+            <Image 
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
+              alt="Telegram" 
+              width={16} 
+              height={16} 
+            />
+            <span>Contact on Telegram</span>
+          </a>
+          <a 
+            href="https://x.com/dcc_crypto" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 bg-black hover:bg-black/80 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
+          >
+            <Image 
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
+              alt="X (Twitter)" 
+              width={14} 
+              height={14} 
+            />
+            <span>Follow on X</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Component() {
   const [activeSection, setActiveSection] = useState('tokenomics')
   const [copied, setCopied] = useState(false)
@@ -135,6 +184,7 @@ export default function Component() {
   const [circulatingPercentage, setCirculatingPercentage] = useState(0);
   const [founderPercentage, setFounderPercentage] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showDevPopup, setShowDevPopup] = useState(true);
 
   const controls = useAnimation()
   const orbitControls = useAnimation()
@@ -296,11 +346,11 @@ export default function Component() {
             {/* Desktop Social Icons */}
             <div className="hidden md:flex items-center gap-6">
               <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" className="relative group p-2">
-                <Image src="/assets/telegramlogo.png" alt="Telegram" width={36} height={36} className="relative z-10" />
+                <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" alt="Telegram" width={36} height={36} className="relative z-10" />
                 <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 rounded-full backdrop-blur-sm transition-all duration-200" />
               </a>
               <a href="#" className="relative group p-2">
-                <Image src="/assets/xlogo.png" alt="X (Twitter)" width={32} height={32} className="relative z-10" />
+                <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" alt="X (Twitter)" width={32} height={32} className="relative z-10" />
                 <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 rounded-full backdrop-blur-sm transition-all duration-200" />
               </a>
               <a href="#" className="relative group p-2">
@@ -374,7 +424,7 @@ export default function Component() {
                 <div className="flex justify-center gap-4 pt-4 border-t border-white/10">
                   <a href="#" className="flex items-center gap-2 md:gap-3 text-white hover:text-pink-300 transition-colors">
                     <Image 
-                      src="/assets/telegramlogo.png" 
+                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
                       alt="Telegram" 
                       width={24} 
                       height={24} 
@@ -386,7 +436,7 @@ export default function Component() {
                   </a>
                   <a href="#" className="flex items-center gap-2 md:gap-3 text-white hover:text-pink-300 transition-colors">
                     <Image 
-                      src="/assets/xlogo.png" 
+                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
                       alt="Twitter" 
                       width={24} 
                       height={24} 
@@ -757,7 +807,7 @@ export default function Component() {
                       onClick={() => window.open(socialLinks.telegram, '_blank')}
                     >
                       <Image 
-                        src="/assets/telegramlogo.png" 
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
                         alt="Telegram" 
                         width={28} 
                         height={28} 
@@ -771,7 +821,7 @@ export default function Component() {
                       onClick={() => window.open(socialLinks.twitter, '_blank')}
                     >
                       <Image 
-                        src="/assets/xlogo.png" 
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
                         alt="X (Twitter)" 
                         width={24} 
                         height={24} 
@@ -818,11 +868,11 @@ export default function Component() {
               <h3 className="text-white text-xl font-bold mb-4">Community</h3>
               <div className="flex flex-col gap-2">
                 <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
-                  <Image src="/assets/telegramlogo.png" alt="Telegram" width={24} height={24} />
+                  <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" alt="Telegram" width={24} height={24} />
                   Telegram
                 </a>
                 <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
-                  <Image src="/assets/xlogo.png" alt="X (Twitter)" width={20} height={20} />
+                  <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" alt="X (Twitter)" width={20} height={20} />
                   Twitter
                 </a>
                 <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
@@ -905,7 +955,7 @@ export default function Component() {
               className="flex items-center gap-1.5 bg-blue-600/80 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
             >
               <Image 
-                src="/assets/telegramlogo.png" 
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
                 alt="Telegram" 
                 width={16} 
                 height={16} 
@@ -919,7 +969,7 @@ export default function Component() {
               className="flex items-center gap-1.5 bg-black hover:bg-black/80 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
             >
               <Image 
-                src="/assets/xlogo.png" 
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
                 alt="X (Twitter)" 
                 width={14} 
                 height={14} 
@@ -1052,7 +1102,7 @@ export default function Component() {
         </div>
       </div>
 
-      <div className="relative w-full flex justify-center items-center py-20">
+      <div className="relative w-full flex justify-center items-center py-12">
         <Sparkles>
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
@@ -1077,7 +1127,7 @@ export default function Component() {
               className="relative"
             >
               <Image
-                src="/assets/vercel.png"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/vercel.png"
                 alt="Vercel"
                 width={200}
                 height={200}
@@ -1087,6 +1137,51 @@ export default function Component() {
           </motion.div>
         </Sparkles>
       </div>
+
+      {/* Static developer section */}
+      <div className="w-full bg-black/30 backdrop-blur-lg py-8 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="text-white text-center md:text-left">
+              <p className="text-lg font-medium">Looking for a stunning website for your memecoin?</p>
+              <p className="text-white/70">This website was crafted by me! Reach out for professional web development services.</p>
+            </div>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-end">
+              <a 
+                href="https://t.me/plug2k" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-blue-600/80 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                <Image 
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
+                  alt="Telegram" 
+                  width={20} 
+                  height={20} 
+                />
+                <span>Contact on Telegram</span>
+              </a>
+              <a 
+                href="https://x.com/dcc_crypto" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-black hover:bg-black/80 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                <Image 
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
+                  alt="X (Twitter)" 
+                  width={18} 
+                  height={18} 
+                />
+                <span>Follow on X</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Popup component */}
+      {showDevPopup && <DeveloperPopup onClose={() => setShowDevPopup(false)} />}
     </div>
   )
 }
