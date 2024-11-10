@@ -837,6 +837,48 @@ export default function Component() {
         </div>
       </footer>
 
+      {/* After the footer and before the scrolling bottom bar */}
+      <div className="bg-black/30 backdrop-blur-lg py-6 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-white text-center md:text-left">
+              <p className="text-lg font-medium">Looking for a stunning website for your memecoin?</p>
+              <p className="text-white/70">This website was crafted by me! Reach out for professional web development services.</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://t.me/plug2k" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                <Image 
+                  src="/assets/telegramlogo.png" 
+                  alt="Telegram" 
+                  width={24} 
+                  height={24} 
+                />
+                <span>Contact on Telegram</span>
+              </a>
+              <a 
+                href="https://x.com/dcc_crypto" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-black hover:bg-black/80 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                <Image 
+                  src="/assets/xlogo.png" 
+                  alt="X (Twitter)" 
+                  width={20} 
+                  height={20} 
+                />
+                <span>Follow on X</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Enhanced Scrolling Bottom Bar */}
       <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 overflow-hidden h-10">
         <div className="flex items-center" style={{ width: "max-content" }}>
