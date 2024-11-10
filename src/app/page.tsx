@@ -169,6 +169,57 @@ function DeveloperPopup({ onClose }: { onClose: () => void }) {
   );
 }
 
+function ScrollingTicker() {
+  const tickerItems = [
+    { logo: '/assets/dexscreenerlogo.png', alt: 'DexScreener', link: socialLinks.dexscreener },
+    { logo: '/assets/dextoolslogo.png', alt: 'DexTools', link: socialLinks.dextools },
+    { logo: '/assets/telegramlogo.png', alt: 'Telegram', link: socialLinks.telegram },
+    { logo: '/assets/xlogo.png', alt: 'X (Twitter)', link: socialLinks.twitter },
+    { logo: '/assets/tiktoklogo.png', alt: 'TikTok', link: socialLinks.tiktok },
+    { logo: '/assets/coingeckologo.png', alt: 'CoinGecko', link: '#', soon: true },
+    { logo: '/assets/coinmarketcaplogo.png', alt: 'CoinMarketCap', link: '#', soon: true },
+  ];
+
+  // Duplicate the items to create a seamless loop
+  const allItems = [...tickerItems, ...tickerItems];
+
+  return (
+    <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-blue-600/80 via-indigo-600/80 to-purple-600/80 backdrop-blur-md border-t border-white/10 safe-bottom z-50">
+      <div className="relative flex overflow-hidden h-16">
+        <div className="animate-ticker flex gap-12 items-center whitespace-nowrap py-3 px-4">
+          {allItems.map((item, index) => (
+            <a
+              key={`${item.alt}-${index}`}
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10 ${
+                item.soon ? 'cursor-not-allowed opacity-50' : 'hover:scale-110'
+              }`}
+            >
+              <div className="relative">
+                <Image
+                  src={item.logo}
+                  alt={item.alt}
+                  width={28}
+                  height={28}
+                  className={`${item.soon ? 'grayscale' : ''}`}
+                />
+                {item.soon && (
+                  <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">
+                    Soon
+                  </span>
+                )}
+              </div>
+              <span className="text-white text-sm font-medium">{item.alt}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Component() {
   const [activeSection, setActiveSection] = useState('tokenomics')
   const [copied, setCopied] = useState(false)
@@ -489,7 +540,7 @@ export default function Component() {
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
             <div className="relative">
               <Image
-                src="/assets/bosalogo.png"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-S3j8xrPUmlkpDVENpM943XrwtlnxYN.png"
                 alt="Bosa Hero"
                 width={240}
                 height={240}
@@ -1020,6 +1071,8 @@ export default function Component() {
 
       {/* Popup component */}
       {showDevPopup && <DeveloperPopup onClose={() => setShowDevPopup(false)} />}
+
+      <ScrollingTicker />
     </div>
   )
 }
