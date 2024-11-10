@@ -10,6 +10,8 @@ const nextConfig = {
       },
     ],
     minimumCacheTTL: 60,
+    domains: ['hebbkx1anhila5yf.public.blob.vercel-storage.com'],
+    unoptimized: true
   },
   webpack: (config) => {
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
@@ -22,4 +24,4 @@ const nextConfig = {
   output: 'standalone'
 }
 
-export default nextConfig 
+module.exports = nextConfig 

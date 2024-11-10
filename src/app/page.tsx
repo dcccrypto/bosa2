@@ -30,30 +30,29 @@ import {
   MessageCircle,
   Send,
   ShoppingCart,
-  Wallet,
-  X,
   Copy,
   CheckCircle2,
   Lock,
   DollarSign,
   Menu,
+  X,
 } from 'lucide-react'
 import Image from 'next/image'
 import { fetchTokenStats } from '@/lib/api'
 import { PieChart } from 'react-minimal-pie-chart'
-import { Connection, PublicKey } from '@solana/web3.js'
-import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+
+const socialLinks = {
+  telegram: "https://t.me/SolBastardSOBA",
+  tiktok: "https://www.tiktok.com/@cryptobastard",
+  twitter: "https://x.com/cryptobastardTX",
+  dexscreener: "https://dexscreener.com/solana/an4avu6vdi7askenb2hpadltzrxdeggb8odqpa7shkg3",
+  dextools: "https://www.dextools.io/app/en/solana/pair-explorer/An4aVu6Vdi7AskENb2HpadLTZRXDeGgB8odQPa7ShkG3?t=1731231419418",
+  buy: "https://jup.ag/swap/SOL-26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG"
+};
 
 export default function Component() {
   const [activeSection, setActiveSection] = useState('tokenomics')
   const [copied, setCopied] = useState(false)
-  const controls = useAnimation()
-  const orbitControls = useAnimation()
-  const socialControls = useAnimation()
-
-  const contractAddress = '26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG'
-
   const [stats, setStats] = useState<{
     price: number;
     totalSupply: number;
@@ -65,12 +64,42 @@ export default function Component() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [circulatingPercentage, setCirculatingPercentage] = useState(0);
+  const [founderPercentage, setFounderPercentage] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(contractAddress)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+  const controls = useAnimation()
+  const orbitControls = useAnimation()
+  const socialControls = useAnimation()
+
+  const contractAddress = '26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG'
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setIsLoading(true)
+        const data = await fetchTokenStats()
+        setStats(data)
+        
+        if (data?.totalSupply && data?.founderBalance) {
+          const circulating = ((data.totalSupply - data.founderBalance) / data.totalSupply) * 100
+          const founder = (data.founderBalance / data.totalSupply) * 100
+          setCirculatingPercentage(circulating)
+          setFounderPercentage(founder)
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch token stats')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchStats()
+    
+    const interval = setInterval(fetchStats, 60000)
+    
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     controls.start({
@@ -90,7 +119,6 @@ export default function Component() {
       transition: {
         x: {
           repeat: Infinity,
-          repeatType: "loop",
           duration: 20,
           ease: "linear",
         },
@@ -98,30 +126,18 @@ export default function Component() {
     })
   }, [controls, orbitControls, socialControls])
 
-  useEffect(() => {
-    const updateStats = async () => {
-      try {
-        console.log('[Frontend] Starting stats update');
-        setIsLoading(true);
-        const data = await fetchTokenStats();
-        console.log('[Frontend] Setting stats:', data);
-        setStats(data);
-        setError(null);
-      } catch (error) {
-        console.error('[Frontend] Error in updateStats:', error);
-        setError('Failed to fetch token stats');
-        setStats(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(contractAddress)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
-    updateStats();
-    const interval = setInterval(updateStats, 30000);
-    return () => clearInterval(interval);
-  }, []);
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 }
+  }
 
-  // Add loading state UI
   if (isLoading && !stats) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-pink-500 via-purple-500 to-blue-500">
@@ -133,12 +149,11 @@ export default function Component() {
     );
   }
 
-  // Add error state UI
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-pink-500 via-purple-500 to-blue-500">
         <div className="text-white text-center">
-          <p className="text-lg">Error: {error}</p>
+          <p className="text-lg mb-4">Error: {error}</p>
           <button 
             onClick={() => window.location.reload()} 
             className="mt-4 px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors"
@@ -149,19 +164,6 @@ export default function Component() {
       </div>
     );
   }
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 }
-  }
-
-  const founderPercentage = stats?.founderBalance && stats?.totalSupply 
-    ? (stats.founderBalance / stats.totalSupply) * 100 
-    : 0;
-  const circulatingPercentage = 100 - founderPercentage;
-
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-pink-500 via-purple-500 to-blue-500 animate-gradient-y">
@@ -653,10 +655,12 @@ export default function Component() {
                         <p className="text-white/70">Use the DEX to swap your SOL for Bosa tokens.</p>
                       </div>
                     </div>
-                    <Button className="relative overflow-hidden group bg-pink-600 hover:bg-pink-700 text-white transition-all duration-300">
-                      <span className="relative z-10">Buy Bosa Now</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-purple-500 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
-                      <div className="absolute inset-0 bg-[radial-gradient(circle,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <Button 
+                      className="bg-pink-600 hover:bg-pink-700 text-white"
+                      onClick={() => window.open(socialLinks.buy, '_blank')}
+                    >
+                      Buy Bosa Now
+                      <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </CardContent>
                 </Card>
@@ -761,19 +765,34 @@ export default function Component() {
               <h3 className="text-white font-bold text-lg mb-4">Community</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-white/70 hover:text-white transition-colors flex items-center">
+                  <a 
+                    href={socialLinks.telegram} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white/70 hover:text-white transition-colors flex items-center"
+                  >
                     <Image src="/assets/telegramlogo.png" alt="Telegram" width={20} height={20} className="mr-2" />
                     Telegram
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-white/70 hover:text-white transition-colors flex items-center">
+                  <a 
+                    href={socialLinks.twitter}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white/70 hover:text-white transition-colors flex items-center"
+                  >
                     <Image src="/assets/xlogo.png" alt="Twitter" width={20} height={20} className="mr-2" />
                     Twitter
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-white/70 hover:text-white transition-colors flex items-center">
+                  <a 
+                    href={socialLinks.tiktok}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white/70 hover:text-white transition-colors flex items-center"
+                  >
                     <Image src="/assets/tiktoklogo.png" alt="TikTok" width={20} height={20} className="mr-2" />
                     TikTok
                   </a>
@@ -836,26 +855,50 @@ export default function Component() {
           <div className="flex items-center gap-6 md:gap-12 min-w-max">
             {/* Social and DEX links with consistent 32x32 sizing */}
             {[
-              { icon: "/assets/telegramlogo.png", text: "Join Telegram", link: "#" },
-              { icon: "/assets/xlogo.png", text: "Follow on X", link: "#" },
-              { icon: "/assets/tiktoklogo.png", text: "Follow on TikTok", link: "#" },
-              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: "#" },
-              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: "#" },
-              { icon: "/assets/coingeckologo.png", text: "CoinGecko", link: "#" },
-              { icon: "/assets/coinmarketcaplogo.png", text: "CoinMarketCap", link: "#" },
+              { icon: "@/assets/telegramlogo.png", text: "Join Telegram", link: socialLinks.telegram },
+              { icon: "@/assets/xlogo.png", text: "Follow on X", link: socialLinks.twitter },
+              { icon: "@/assets/tiktoklogo.png", text: "Follow on TikTok", link: socialLinks.tiktok },
+              { icon: "@/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener },
+              { icon: "@/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools },
+              { 
+                icon: "@/assets/coingeckologo.png", 
+                text: "CoinGecko (Coming Soon)", 
+                link: "#",
+                disabled: true,
+                comingSoon: true 
+              },
+              { 
+                icon: "@/assets/coinmarketcaplogo.png", 
+                text: "CoinMarketCap (Coming Soon)", 
+                link: "#",
+                disabled: true,
+                comingSoon: true 
+              },
             ].map((item, index) => (
               <a 
                 key={index}
                 href={item.link}
-                className="flex items-center gap-2 md:gap-3 text-white hover:text-pink-300 transition-colors"
+                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
+                className={`flex items-center gap-2 md:gap-3 ${
+                  item.disabled 
+                    ? 'cursor-not-allowed opacity-50' 
+                    : 'hover:text-pink-300'
+                } transition-colors text-white relative group`}
               >
-                <Image 
-                  src={item.icon} 
-                  alt={item.text} 
-                  width={24} 
-                  height={24} 
-                  className="md:w-8 md:h-8" 
-                />
+                <div className="relative">
+                  <Image 
+                    src={item.icon} 
+                    alt={item.text} 
+                    width={24} 
+                    height={24} 
+                    className={`md:w-8 md:h-8 ${item.disabled ? 'grayscale' : ''}`}
+                  />
+                  {item.comingSoon && (
+                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[10px] px-1 rounded-full">
+                      Soon
+                    </div>
+                  )}
+                </div>
                 <span className="text-xs md:text-sm font-medium hidden sm:inline">
                   {item.text}
                 </span>
