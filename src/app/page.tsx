@@ -62,7 +62,6 @@ const pieChartStyle = {
     fontSize: "8px",
     fontWeight: "bold",
     fill: "#fff",
-    textAnchor: "middle"
   }
 };
 
@@ -574,6 +573,9 @@ export default function Component() {
                               ]}
                               {...pieChartStyle}
                               label={({ dataEntry }) => `${Math.round(dataEntry.value)}%`}
+                              style={{
+                                textAnchor: "middle"
+                              }}
                             />
                           </div>
                           {/* Add hover effect with detailed info */}
