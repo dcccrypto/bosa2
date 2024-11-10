@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy:backend": "cd backend && npm run build && git push heroku main",
+    "deploy:frontend": "vercel --prod"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.1",
