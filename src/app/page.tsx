@@ -34,15 +34,11 @@ import {
   X,
   Copy,
   CheckCircle2,
-  Sparkles,
-  Star,
   Lock,
-  ExternalLink,
-  ChevronRight,
 } from 'lucide-react'
 import Image from 'next/image'
-import { getTokenPrice, fetchTotalTokenSupply, fetchTokenHolders, fetchFounderBalance, logAllTokenStats } from '@/lib/api'
-import { PieChart } from 'react-minimal-pie-chart';
+import { logAllTokenStats } from '@/lib/api'
+import { PieChart } from 'react-minimal-pie-chart'
 
 export default function Component() {
   const [activeSection, setActiveSection] = useState('tokenomics')
@@ -92,16 +88,12 @@ export default function Component() {
 
   useEffect(() => {
     async function updateStats() {
-      console.log('Starting stats update...');
       try {
         const stats = await logAllTokenStats();
-        
         if (stats.price?.price) setTokenPrice(stats.price.price);
         if (stats.supply) setTotalSupply(stats.supply);
         if (stats.holders) setHolders(stats.holders);
         if (stats.founderBalance) setFounderBalance(stats.founderBalance);
-        
-        console.log('Stats update completed successfully');
       } catch (error) {
         console.error('Error updating stats:', error);
       }
@@ -118,14 +110,6 @@ export default function Component() {
     exit: { opacity: 0, y: -20 }
   }
 
-  const glowVariants = {
-    initial: { scale: 0.8, opacity: 0 },
-    animate: { scale: 1, opacity: 1 },
-    exit: { scale: 1.2, opacity: 0 },
-  }
-
-  const colors = ['#FF1493', '#00FFFF', '#FF4500', '#1E90FF', '#32CD32', '#FFD700', '#FF69B4', '#00FA9A', '#9370DB', '#FF6347']
-
   const founderPercentage = founderBalance && totalSupply ? (founderBalance / totalSupply) * 100 : 0;
   const circulatingPercentage = 100 - founderPercentage;
 
@@ -136,10 +120,13 @@ export default function Component() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <img
+              <Image
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-S3j8xrPUmlkpDVENpM943XrwtlnxYN.png"
                 alt="Bosa Logo"
+                width={56}
+                height={56}
                 className="w-14 h-14 rounded-full hover:scale-110 transition-transform duration-200"
+                priority
               />
               <div className="hidden md:flex items-center gap-8">
                 <Button
@@ -620,19 +607,23 @@ export default function Component() {
                   <AccordionItem value="item-2" className="border-b border-white/10">
                     <AccordionTrigger className="text-white hover:text-pink-300">How can I buy Bosa?</AccordionTrigger>
                     <AccordionContent className="text-white/70">
-                      You can buy Bosa on Solana DEXes like Raydium or Orca. Set up a Solana wallet, purchase SOL, connect to a DEX, and swap SOL for Bosa. Check our "How to Buy" section for step-by-step instructions.
+                      You can buy Bosa on Solana DEXes like Raydium or Orca. Set up a Solana wallet, purchase SOL, connect to a DEX, and swap SOL for Bosa. Check our &quot;How to Buy&quot; section for step-by-step instructions.
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="item-3" className="border-b border-white/10">
-                    <AccordionTrigger className="text-white hover:text-pink-300">Is there a tax on Bosa transactions?</AccordionTrigger>
+                    <AccordionTrigger className="text-white hover:text-pink-300">
+                      Is there a tax on Bosa transactions?
+                    </AccordionTrigger>
                     <AccordionContent className="text-white/70">
                       No, Bosa has 0% tax on all transactions. This means you keep more of your tokens when buying, selling, or transferring Bosa.
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="item-4">
-                    <AccordionTrigger className="text-white hover:text-pink-300">What makes Bosa unique?</AccordionTrigger>
+                    <AccordionTrigger className="text-white hover:text-pink-300">
+                      What makes Bosa unique?
+                    </AccordionTrigger>
                     <AccordionContent className="text-white/70">
-                      Bosa stands out with its vibrant community, zero transaction tax, and plans for future utility development. It's not just a memecoin, but a project aiming to bring real value to the Solana ecosystem.
+                      Bosa stands out with its vibrant community, zero transaction tax, and plans for future utility development. It&apos;s not just a memecoin, but a project aiming to bring real value to the Solana ecosystem.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
