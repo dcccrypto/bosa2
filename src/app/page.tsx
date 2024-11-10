@@ -52,15 +52,11 @@ export default function Component() {
 
   const contractAddress = '26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG'
 
-  const [tokenPrice, setTokenPrice] = useState<number | null>(null)
-  const [totalSupply, setTotalSupply] = useState<number | null>(null)
-  const [holders, setHolders] = useState<number | null>(null)
-  const [founderBalance, setFounderBalance] = useState<number | null>(null)
-
   const [stats, setStats] = useState<{
     price: number;
     totalSupply: number;
     founderBalance: number;
+    holders: number;
     lastUpdated: string;
     cached?: boolean;
     cacheAge?: number;
@@ -388,10 +384,8 @@ export default function Component() {
                       <div className="text-center p-4 rounded-lg bg-white/5">
                         <BarChart3 className="w-8 h-8 mx-auto mb-2" />
                         <div className="text-2xl font-bold">
-                          {totalSupply ? (
-                            new Intl.NumberFormat('en-US', {
-                              maximumFractionDigits: 0
-                            }).format(totalSupply)
+                          {stats ? (
+                            new Intl.NumberFormat('en-US').format(stats.totalSupply)
                           ) : (
                             <span className="animate-pulse">Loading...</span>
                           )}
@@ -401,8 +395,8 @@ export default function Component() {
                       <div className="text-center p-4 rounded-lg bg-white/5">
                         <BarChart3 className="w-8 h-8 mx-auto mb-2" />
                         <div className="text-2xl font-bold">
-                          {tokenPrice ? (
-                            `$${tokenPrice.toFixed(8)}`
+                          {stats ? (
+                            `$${stats.price.toFixed(8)}`
                           ) : (
                             <span className="animate-pulse">Loading...</span>
                           )}
@@ -417,8 +411,8 @@ export default function Component() {
                       <div className="text-center p-4 rounded-lg bg-white/5">
                         <Users className="w-8 h-8 mx-auto mb-2" />
                         <div className="text-2xl font-bold">
-                          {holders ? (
-                            new Intl.NumberFormat('en-US').format(holders)
+                          {stats ? (
+                            new Intl.NumberFormat('en-US').format(stats.holders)
                           ) : (
                             <span className="animate-pulse">Loading...</span>
                           )}
@@ -429,10 +423,10 @@ export default function Component() {
                       <div className="text-center p-4 rounded-lg bg-white/5">
                         <Lock className="w-8 h-8 mx-auto mb-2" />
                         <div className="text-2xl font-bold">
-                          {founderBalance ? (
+                          {stats ? (
                             new Intl.NumberFormat('en-US', {
                               maximumFractionDigits: 0
-                            }).format(founderBalance)
+                            }).format(stats.founderBalance)
                           ) : (
                             <span className="animate-pulse">Loading...</span>
                           )}
