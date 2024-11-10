@@ -57,7 +57,14 @@ export default function Component() {
   const [holders, setHolders] = useState<number | null>(null)
   const [founderBalance, setFounderBalance] = useState<number | null>(null)
 
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<{
+    price: number;
+    totalSupply: number;
+    founderBalance: number;
+    lastUpdated: string;
+    cached?: boolean;
+    cacheAge?: number;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -96,13 +103,16 @@ export default function Component() {
   useEffect(() => {
     const updateStats = async () => {
       try {
+        console.log('[Frontend] Starting stats update');
         setIsLoading(true);
         const data = await fetchTokenStats();
+        console.log('[Frontend] Setting stats:', data);
         setStats(data);
         setError(null);
       } catch (error) {
+        console.error('[Frontend] Error in updateStats:', error);
         setError('Failed to fetch token stats');
-        console.error(error);
+        setStats(null);
       } finally {
         setIsLoading(false);
       }
@@ -113,13 +123,44 @@ export default function Component() {
     return () => clearInterval(interval);
   }, []);
 
+  // Add loading state UI
+  if (isLoading && !stats) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-pink-500 via-purple-500 to-blue-500">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-lg">Loading token stats...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Add error state UI
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-pink-500 via-purple-500 to-blue-500">
+        <div className="text-white text-center">
+          <p className="text-lg">Error: {error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 }
   }
 
-  const founderPercentage = founderBalance && totalSupply ? (founderBalance / totalSupply) * 100 : 0;
+  const founderPercentage = stats?.founderBalance && stats?.totalSupply 
+    ? (stats.founderBalance / stats.totalSupply) * 100 
+    : 0;
   const circulatingPercentage = 100 - founderPercentage;
 
   return (
