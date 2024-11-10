@@ -15,13 +15,11 @@ const nextConfig = {
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
     return config;
   },
-  // Modify experimental features
   experimental: {
-    optimizeCss: false, // Disable CSS optimization temporarily
+    optimizeCss: false,
     scrollRestoration: true
   },
-  // Add output configuration
   output: 'standalone'
 }
 
-module.exports = nextConfig
+export default nextConfig 
