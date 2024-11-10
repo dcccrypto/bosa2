@@ -50,6 +50,21 @@ const socialLinks = {
   buy: "https://jup.ag/swap/SOL-26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG"
 };
 
+// Update the pie chart colors and styles
+const pieChartStyle = {
+  lineWidth: 60,
+  animate: true,
+  animationDuration: 1000,
+  animationEasing: "ease-out",
+  radius: 50,
+  labelPosition: 50,
+  labelStyle: {
+    fontSize: "6px",
+    fontWeight: "bold",
+    fill: "#fff"
+  }
+};
+
 export default function Component() {
   const [activeSection, setActiveSection] = useState('tokenomics')
   const [copied, setCopied] = useState(false)
@@ -113,9 +128,9 @@ export default function Component() {
 
     const animate = async () => {
       await socialControls.start({
-        x: "-50%",
+        x: "-100%",
         transition: {
-          duration: 15,
+          duration: 20,
           repeat: Infinity,
           repeatType: "loop",
           ease: "linear",
@@ -124,7 +139,7 @@ export default function Component() {
     };
     
     animate();
-  }, [controls, orbitControls, socialControls])
+  }, [socialControls]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(contractAddress)
@@ -548,60 +563,49 @@ export default function Component() {
                                 { 
                                   title: 'Founder', 
                                   value: founderPercentage, 
-                                  color: '#ec4899',
-                                  description: `${new Intl.NumberFormat('en-US').format(stats?.founderBalance || 0)} tokens`
+                                  color: '#3b82f6',
                                 },
                                 { 
                                   title: 'Circulating', 
                                   value: circulatingPercentage, 
-                                  color: '#8b5cf6',
-                                  description: `${new Intl.NumberFormat('en-US').format((stats?.totalSupply || 0) - (stats?.founderBalance || 0))} tokens`
+                                  color: '#10b981',
                                 }
                               ]}
-                              lineWidth={25}
-                              paddingAngle={2}
-                              rounded
-                              animate
-                              animationDuration={800}
+                              {...pieChartStyle}
                               label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
                               labelStyle={{
-                                fontSize: '5px',
-                                fill: '#fff',
-                                fontWeight: 'bold',
-                              }}
-                              labelPosition={75}
-                              segmentsStyle={{ transition: 'stroke-width 0.2s' }}
-                              segmentsShift={1}
-                              onMouseOver={(_, index) => {
-                                console.log(`Segment ${index} hovered`);
+                                ...pieChartStyle.labelStyle,
+                                pointerEvents: 'none',
                               }}
                             />
                           </div>
-                        </div>
-                        <div className="w-full md:w-3/5 space-y-4">
-                          <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-200">
-                            <div className="flex items-center">
-                              <div className="w-4 h-4 rounded-full bg-pink-500 mr-3"></div>
-                              <div>
-                                <div className="text-white font-medium">Founder Holdings</div>
-                                <div className="text-white/70 text-sm">
-                                  {new Intl.NumberFormat('en-US').format(stats?.founderBalance || 0)} tokens
-                                </div>
-                              </div>
+                          {/* Add hover effect with detailed info */}
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="bg-black/80 backdrop-blur-sm rounded-lg p-4 text-white text-sm">
+                              <p>Total Supply: {stats ? new Intl.NumberFormat().format(stats.totalSupply) : '0'}</p>
+                              <p>Circulating: {stats ? new Intl.NumberFormat().format(stats.totalSupply - stats.founderBalance) : '0'}</p>
+                              <p>Founder: {stats ? new Intl.NumberFormat().format(stats.founderBalance) : '0'}</p>
                             </div>
-                            <div className="text-white font-bold">{founderPercentage.toFixed(2)}%</div>
                           </div>
-                          <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-200">
-                            <div className="flex items-center">
-                              <div className="w-4 h-4 rounded-full bg-purple-500 mr-3"></div>
-                              <div>
-                                <div className="text-white font-medium">Circulating Supply</div>
-                                <div className="text-white/70 text-sm">
-                                  {new Intl.NumberFormat('en-US').format((stats?.totalSupply || 0) - (stats?.founderBalance || 0))} tokens
-                                </div>
-                              </div>
+                        </div>
+                        <div className="flex flex-col gap-4 w-full md:w-3/5">
+                          <div className="flex items-center gap-3">
+                            <div className="w-4 h-4 rounded-full bg-[#10b981]"></div>
+                            <div>
+                              <p className="text-white font-semibold">Circulating Supply</p>
+                              <p className="text-white/70 text-sm">
+                                {new Intl.NumberFormat().format(stats?.totalSupply ? stats.totalSupply - stats.founderBalance : 0)} tokens ({circulatingPercentage.toFixed(2)}%)
+                              </p>
                             </div>
-                            <div className="text-white font-bold">{circulatingPercentage.toFixed(2)}%</div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="w-4 h-4 rounded-full bg-[#3b82f6]"></div>
+                            <div>
+                              <p className="text-white font-semibold">Founder Holdings</p>
+                              <p className="text-white/70 text-sm">
+                                {new Intl.NumberFormat().format(stats?.founderBalance || 0)} tokens ({founderPercentage.toFixed(2)}%)
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -835,21 +839,16 @@ export default function Component() {
       </footer>
 
       {/* Enhanced Scrolling Bottom Bar */}
-      <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 overflow-hidden h-10">
-        <div className="flex items-center relative" style={{ width: "200%" }}>
+      <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 overflow-hidden h-10">
+        <div className="flex items-center" style={{ width: "max-content" }}>
           <motion.div 
             animate={socialControls}
             className="flex items-center gap-6 py-1.5 px-2"
             style={{ 
-              position: "absolute",
-              left: 0,
-              width: "50%",
               display: "flex",
               whiteSpace: "nowrap",
-              justifyContent: "space-around"
             }}
           >
-            {/* First set of items */}
             {[
               { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
               { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
@@ -893,7 +892,61 @@ export default function Component() {
                     className={`${item.disabled ? 'grayscale' : ''}`}
                   />
                   {item.comingSoon && (
-                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">
+                    <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-[7px] px-1 py-0.5 rounded-full">
+                      Soon
+                    </div>
+                  )}
+                </div>
+                <span className="text-[11px] font-medium hidden sm:inline whitespace-nowrap">
+                  {item.text}
+                </span>
+              </a>
+            ))}
+            {/* Duplicate items for seamless loop */}
+            {[
+              { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
+              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
+              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
+              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
+              { 
+                icon: "/assets/coingeckologo.png", 
+                text: "Soon", 
+                link: "#",
+                disabled: true,
+                comingSoon: true,
+                size: 22
+              },
+              { 
+                icon: "/assets/coinmarketcaplogo.png", 
+                text: "Soon", 
+                link: "#",
+                disabled: true,
+                comingSoon: true,
+                size: 22
+              }
+            ].map((item, index) => (
+              <a 
+                key={`duplicate-${index}`}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
+                className={`flex items-center gap-1.5 ${
+                  item.disabled 
+                    ? 'cursor-not-allowed opacity-50' 
+                    : 'hover:text-pink-300 hover:opacity-80'
+                } transition-all text-white relative group`}
+              >
+                <div className="relative">
+                  <Image 
+                    src={item.icon} 
+                    alt={item.text} 
+                    width={item.size} 
+                    height={item.size} 
+                    className={`${item.disabled ? 'grayscale' : ''}`}
+                  />
+                  {item.comingSoon && (
+                    <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-[7px] px-1 py-0.5 rounded-full">
                       Soon
                     </div>
                   )}
@@ -904,72 +957,6 @@ export default function Component() {
               </a>
             ))}
           </motion.div>
-          <div 
-            className="flex items-center gap-6 py-1.5 px-2"
-            style={{ 
-              position: "absolute",
-              left: "50%",
-              width: "50%",
-              display: "flex",
-              whiteSpace: "nowrap",
-              justifyContent: "space-around"
-            }}
-          >
-            {/* Duplicate set of items */}
-            {[
-              { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
-              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
-              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
-              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
-              { 
-                icon: "/assets/coingeckologo.png", 
-                text: "Soon", 
-                link: "#",
-                disabled: true,
-                comingSoon: true,
-                size: 22
-              },
-              { 
-                icon: "/assets/coinmarketcaplogo.png", 
-                text: "Soon", 
-                link: "#",
-                disabled: true,
-                comingSoon: true,
-                size: 22
-              }
-            ].map((item, index) => (
-              <a 
-                key={index}
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
-                className={`flex items-center gap-1.5 ${
-                  item.disabled 
-                    ? 'cursor-not-allowed opacity-50' 
-                    : 'hover:text-pink-300 hover:opacity-80'
-                } transition-all text-white relative group`}
-              >
-                <div className="relative">
-                  <Image 
-                    src={item.icon} 
-                    alt={item.text} 
-                    width={item.size} 
-                    height={item.size} 
-                    className={`${item.disabled ? 'grayscale' : ''}`}
-                  />
-                  {item.comingSoon && (
-                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">
-                      Soon
-                    </div>
-                  )}
-                </div>
-                <span className="text-[11px] font-medium hidden sm:inline whitespace-nowrap">
-                  {item.text}
-                </span>
-              </a>
-            ))}
-          </div>
         </div>
       </div>
     </div>
