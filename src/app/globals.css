@@ -124,10 +124,10 @@
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073;
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #4F46E5, 0 0 20px #4F46E5;
   }
   to {
-    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073;
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #4F46E5, 0 0 40px #4F46E5;
   }
 }
 
@@ -155,7 +155,7 @@ html {
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500;
 }
 
 /* Improve touch targets on mobile */

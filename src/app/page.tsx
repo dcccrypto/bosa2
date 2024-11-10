@@ -57,11 +57,12 @@ const pieChartStyle = {
   animationDuration: 1000,
   animationEasing: "ease-out",
   radius: 50,
-  labelPosition: 50,
+  labelPosition: 75,
   labelStyle: {
-    fontSize: "6px",
+    fontSize: "8px",
     fontWeight: "bold",
-    fill: "#fff"
+    fill: "#fff",
+    textAnchor: "middle"
   }
 };
 
@@ -170,7 +171,7 @@ export default function Component() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-pink-500 via-purple-500 to-blue-500 animate-gradient-y">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500 animate-gradient-y">
       {/* Navigation */}
       <nav className="fixed top-0 w-full backdrop-blur-lg bg-white/10 z-50">
         <div className="container mx-auto px-6 py-4">
@@ -560,23 +561,19 @@ export default function Component() {
                           <div className="transform transition-transform duration-300 group-hover:scale-105">
                             <PieChart
                               data={[
-                                { 
-                                  title: 'Founder', 
-                                  value: founderPercentage, 
-                                  color: '#3b82f6',
+                                {
+                                  title: 'Circulating',
+                                  value: circulatingPercentage,
+                                  color: '#4F46E5'
                                 },
-                                { 
-                                  title: 'Circulating', 
-                                  value: circulatingPercentage, 
-                                  color: '#10b981',
+                                {
+                                  title: 'Founder',
+                                  value: founderPercentage,
+                                  color: '#3B82F6'
                                 }
                               ]}
                               {...pieChartStyle}
-                              label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
-                              labelStyle={{
-                                ...pieChartStyle.labelStyle,
-                                pointerEvents: 'none',
-                              }}
+                              label={({ dataEntry }) => `${Math.round(dataEntry.value)}%`}
                             />
                           </div>
                           {/* Add hover effect with detailed info */}
