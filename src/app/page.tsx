@@ -115,11 +115,12 @@ export default function Component() {
     })
 
     socialControls.start({
-      x: ["100%", "-100%"],
+      x: [0, -1200],
       transition: {
         x: {
           repeat: Infinity,
-          duration: 20,
+          repeatType: "loop",
+          duration: 30,
           ease: "linear",
         },
       },
@@ -757,118 +758,56 @@ export default function Component() {
       </main>
 
       {/* Enhanced Footer */}
-      <footer className="mt-24 bg-black/20 backdrop-blur-lg">
-        <div className="container mx-auto px-4 md:px-6 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+      <footer className="bg-black/20 backdrop-blur-lg mt-20 py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">Quick Links</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#tokenomics" className="text-white/70 hover:text-white transition-colors">
-                    Tokenomics
-                  </a>
-                </li>
-                <li>
-                  <a href="#how-to-buy" className="text-white/70 hover:text-white transition-colors">
-                    How to Buy
-                  </a>
-                </li>
-                <li>
-                  <a href="#roadmap" className="text-white/70 hover:text-white transition-colors">
-                    Roadmap
-                  </a>
-                </li>
-                <li>
-                  <a href="#community" className="text-white/70 hover:text-white transition-colors">
-                    Community
-                  </a>
-                </li>
-              </ul>
+              <h3 className="text-white text-xl font-bold mb-4">Quick Links</h3>
+              <div className="flex flex-col gap-2">
+                <a href="#tokenomics" className="text-white/70 hover:text-white transition-colors">Tokenomics</a>
+                <a href="#roadmap" className="text-white/70 hover:text-white transition-colors">Roadmap</a>
+                <a href="#community" className="text-white/70 hover:text-white transition-colors">Community</a>
+                <a href="#faq" className="text-white/70 hover:text-white transition-colors">FAQ</a>
+              </div>
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">Community</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a 
-                    href={socialLinks.telegram} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/70 hover:text-white transition-colors flex items-center"
-                  >
-                    <Image src="/assets/telegramlogo.png" alt="Telegram" width={30} height={30} className="mr-2" />
-                    Telegram
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href={socialLinks.twitter}
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/70 hover:text-white transition-colors flex items-center"
-                  >
-                    <Image src="/assets/xlogo.png" alt="Twitter" width={20} height={20} className="mr-2" />
-                    Twitter
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href={socialLinks.tiktok}
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/70 hover:text-white transition-colors flex items-center"
-                  >
-                    <Image src="/assets/tiktoklogo.png" alt="TikTok" width={20} height={20} className="mr-2" />
-                    TikTok
-                  </a>
-                </li>
-              </ul>
+              <h3 className="text-white text-xl font-bold mb-4">Community</h3>
+              <div className="flex flex-col gap-2">
+                <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
+                  <Image src="/assets/telegramlogo.png" alt="Telegram" width={24} height={24} />
+                  Telegram
+                </a>
+                <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
+                  <Image src="/assets/xlogo.png" alt="X (Twitter)" width={20} height={20} />
+                  Twitter
+                </a>
+                <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center gap-2">
+                  <Image src="/assets/tiktoklogo.png" alt="TikTok" width={20} height={20} />
+                  TikTok
+                </a>
+              </div>
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">FAQ</h3>
-              <div>
-                <Accordion type="single" collapsible className="w-full space-y-2">
-                  <AccordionItem value="item-1" className="border-b border-white/10">
-                    <AccordionTrigger className="text-white hover:text-pink-300">What is Bosa?</AccordionTrigger>
-                    <AccordionContent className="text-white/70">
-                      Bosa is a vibrant memecoin on the Solana blockchain, designed to bring fun and value to the crypto community. It combines the excitement of memes with the potential of decentralized finance.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-2" className="border-b border-white/10">
-                    <AccordionTrigger className="text-white hover:text-pink-300">How can I buy Bosa?</AccordionTrigger>
-                    <AccordionContent className="text-white/70">
-                      You can buy Bosa on Solana DEXes like Raydium or Orca. Set up a Solana wallet, purchase SOL, connect to a DEX, and swap SOL for Bosa. Check our &quot;How to Buy&quot; section for step-by-step instructions.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-3" className="border-b border-white/10">
-                    <AccordionTrigger className="text-white hover:text-pink-300">
-                      Is there a tax on Bosa transactions?
-                    </AccordionTrigger>
-                    <AccordionContent className="text-white/70">
-                      No, Bosa has 0% tax on all transactions. This means you keep more of your tokens when buying, selling, or transferring Bosa.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-4">
-                    <AccordionTrigger className="text-white hover:text-pink-300">
-                      What makes Bosa unique?
-                    </AccordionTrigger>
-                    <AccordionContent className="text-white/70">
-                      Bosa stands out with its vibrant community, zero transaction tax, and plans for future utility development. It&apos;s not just a memecoin, but a project aiming to bring real value to the Solana ecosystem.
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+              <h3 className="text-white text-xl font-bold mb-4">Trading</h3>
+              <div className="flex flex-col gap-2">
+                <a href={socialLinks.buy} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Buy BOSA</a>
+                <a href={socialLinks.dexscreener} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">DexScreener</a>
+                <a href={socialLinks.dextools} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">DexTools</a>
               </div>
             </div>
           </div>
-          <div className="border-t border-white/10 pt-8 mt-8">
+
+          {/* Update the bottom bar with consistent logo sizes */}
+          <div className="border-t border-white/10 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-white font-medium text-lg">© Bosa. All rights reserved.</p>
-              <div className="flex items-center gap-4">
+              <p className="text-white font-medium">© 2024 Bosa. All rights reserved.</p>
+              <div className="flex items-center gap-6">
                 <a href={socialLinks.dexscreener} target="_blank" rel="noopener noreferrer">
                   <Image 
                     src="/assets/dexscreenerlogo.png" 
                     alt="DexScreener" 
-                    width={32} 
-                    height={32} 
+                    width={28} 
+                    height={28} 
                     className="opacity-70 hover:opacity-100 transition-opacity"
                   />
                 </a>
@@ -876,28 +815,30 @@ export default function Component() {
                   <Image 
                     src="/assets/dextoolslogo.png" 
                     alt="DexTools" 
-                    width={32} 
-                    height={32} 
+                    width={28} 
+                    height={28} 
                     className="opacity-70 hover:opacity-100 transition-opacity"
                   />
                 </a>
-                <div className="opacity-50 cursor-not-allowed">
+                <div className="opacity-50 cursor-not-allowed relative group">
                   <Image 
                     src="/assets/coingeckologo.png" 
                     alt="CoinGecko" 
-                    width={32} 
-                    height={32} 
+                    width={28} 
+                    height={28} 
                     className="opacity-70 grayscale"
                   />
+                  <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">Soon</span>
                 </div>
-                <div className="opacity-50 cursor-not-allowed">
+                <div className="opacity-50 cursor-not-allowed relative group">
                   <Image 
                     src="/assets/coinmarketcaplogo.png" 
                     alt="CoinMarketCap" 
-                    width={32} 
-                    height={32} 
+                    width={28} 
+                    height={28} 
                     className="opacity-70 grayscale"
                   />
+                  <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">Soon</span>
                 </div>
               </div>
             </div>
@@ -910,21 +851,22 @@ export default function Component() {
         <motion.div 
           className="flex items-center py-1.5 px-2"
           animate={socialControls}
+          style={{ width: "fit-content" }}
         >
-          <div className="flex items-center gap-4 min-w-max">
+          <div className="flex items-center gap-6 min-w-max">
             {[
               { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
-              { icon: "/assets/xlogo.png", text: "X", link: socialLinks.twitter, size: 24 },
-              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 24 },
-              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 24 },
-              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 24 },
+              { icon: "/assets/xlogo.png", text: "X", link: socialLinks.twitter, size: 22 },
+              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
+              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
+              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
               { 
                 icon: "/assets/coingeckologo.png", 
                 text: "Soon", 
                 link: "#",
                 disabled: true,
                 comingSoon: true,
-                size: 24
+                size: 22
               },
               { 
                 icon: "/assets/coinmarketcaplogo.png", 
@@ -932,7 +874,7 @@ export default function Component() {
                 link: "#",
                 disabled: true,
                 comingSoon: true,
-                size: 24
+                size: 22
               },
             ].map((item, index) => (
               <a 
