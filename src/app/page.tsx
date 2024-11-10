@@ -39,6 +39,9 @@ import {
 import Image from 'next/image'
 import { logAllTokenStats } from '@/lib/api'
 import { PieChart } from 'react-minimal-pie-chart'
+import { Connection, PublicKey } from '@solana/web3.js'
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 export default function Component() {
   const [activeSection, setActiveSection] = useState('tokenomics')
@@ -87,17 +90,48 @@ export default function Component() {
   }, [controls, orbitControls, socialControls])
 
   useEffect(() => {
-    async function updateStats() {
+    const updateStats = async () => {
       try {
-        const stats = await logAllTokenStats();
-        if (stats.price?.price) setTokenPrice(stats.price.price);
-        if (stats.supply) setTotalSupply(stats.supply);
-        if (stats.holders) setHolders(stats.holders);
-        if (stats.founderBalance) setFounderBalance(stats.founderBalance);
+        // Fetch token price with API key
+        const priceResponse = await fetch(
+          `https://data.solanatracker.io/price?token=${contractAddress}`, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`
+          }
+        });
+        const priceData = await priceResponse.json();
+        setTokenPrice(priceData.price);
+
+        // Use public Solana RPC endpoint or your own endpoint
+        const connection = new Connection(
+          process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com',
+          'confirmed'
+        );
+
+        // Fetch total supply
+        const tokenMint = new PublicKey(contractAddress);
+        const supply = await connection.getTokenSupply(tokenMint);
+        setTotalSupply(Number(supply.value.amount));
+
+        // Fetch founder balance
+        const founderAddress = new PublicKey('YOUR_FOUNDER_ADDRESS');
+        const founderBalance = await connection.getTokenAccountBalance(founderAddress);
+        setFounderBalance(Number(founderBalance.value.amount));
+
+        // Fetch holders with API key
+        const holdersResponse = await fetch(
+          `https://data.solanatracker.io/holders?token=${contractAddress}`, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`
+          }
+        });
+        const holdersData = await holdersResponse.json();
+        setHolders(holdersData.holders);
+
       } catch (error) {
         console.error('Error updating stats:', error);
       }
-    }
+    };
 
     updateStats();
     const interval = setInterval(updateStats, 120000);

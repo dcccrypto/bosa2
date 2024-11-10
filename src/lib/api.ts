@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Connection, PublicKey } from '@solana/web3.js';
+import { priceRateLimiter, solanaRateLimiter } from './rateLimiter';
 
 // API configuration
 const apiKey = process.env.API_KEY;
@@ -18,6 +19,7 @@ const apiClient = axios.create({
 export async function getTokenPrice() {
   console.log('Fetching token price...');
   try {
+    await priceRateLimiter.throttle();
     const response = await apiClient.get('/price', {
       params: { token: tokenAddress },
     });
@@ -26,28 +28,24 @@ export async function getTokenPrice() {
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error('Error fetching token price:', error.response?.data || error.message);
-    } else {
-      console.error('Error fetching token price:', error);
+      throw new Error(`Failed to fetch token price: ${error.response?.data?.message || error.message}`);
     }
-    return null;
+    throw error;
   }
 }
 
 export async function fetchTotalTokenSupply() {
   console.log('Fetching total token supply...');
   try {
+    await solanaRateLimiter.throttle();
     const connection = new Connection(SOLANA_RPC_ENDPOINT, 'confirmed');
     const mintPublicKey = new PublicKey(tokenAddress);
     const supplyResponse = await connection.getTokenSupply(mintPublicKey);
     console.log('Total supply fetched successfully:', supplyResponse.value.uiAmount);
     return supplyResponse.value.uiAmount;
   } catch (error) {
-    if (error instanceof Error) {
-      console.error('Error fetching total token supply:', error.message);
-    } else {
-      console.error('Error fetching total token supply:', String(error));
-    }
-    return null;
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to fetch total token supply: ${message}`);
   }
 }
 
