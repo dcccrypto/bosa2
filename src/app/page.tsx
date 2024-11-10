@@ -238,8 +238,8 @@ export default function Component() {
 
             {/* Desktop Social Icons */}
             <div className="hidden md:flex items-center gap-6">
-              <a href="#" className="relative group p-2">
-                <Image src="/assets/telegramlogo.png" alt="Telegram" width={32} height={32} className="relative z-10" />
+              <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" className="relative group p-2">
+                <Image src="/assets/telegramlogo.png" alt="Telegram" width={36} height={36} className="relative z-10" />
                 <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 rounded-full backdrop-blur-sm transition-all duration-200" />
               </a>
               <a href="#" className="relative group p-2">
@@ -701,30 +701,51 @@ export default function Component() {
                 <Card className="bg-white/10 border-white/20">
                   <CardHeader>
                     <CardTitle className="text-white">Join Our Community</CardTitle>
+                    <CardDescription className="text-white/70">
+                      Connect with fellow Bosa holders and stay updated
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="grid md:grid-cols-3 gap-4">
                     <Button
                       variant="outline"
-                      className="bg-white/10 hover:bg-white/20 text-white border-white/20"
+                      className="bg-white/10 hover:bg-white/20 text-white border-white/20 h-14"
                       onClick={() => window.open(socialLinks.telegram, '_blank')}
                     >
-                      <Send className="mr-2 h-4 w-4" />
+                      <Image 
+                        src="/assets/telegramlogo.png" 
+                        alt="Telegram" 
+                        width={28} 
+                        height={28} 
+                        className="mr-2" 
+                      />
                       Telegram
                     </Button>
                     <Button
                       variant="outline"
-                      className="bg-white/10 hover:bg-white/20 text-white border-white/20"
+                      className="bg-white/10 hover:bg-white/20 text-white border-white/20 h-14"
                       onClick={() => window.open(socialLinks.twitter, '_blank')}
                     >
-                      <X className="mr-2 h-4 w-4" />
-                      X (Twitter)
+                      <Image 
+                        src="/assets/xlogo.png" 
+                        alt="X (Twitter)" 
+                        width={24} 
+                        height={24} 
+                        className="mr-2" 
+                      />
+                      Twitter
                     </Button>
                     <Button
                       variant="outline"
-                      className="bg-white/10 hover:bg-white/20 text-white border-white/20"
+                      className="bg-white/10 hover:bg-white/20 text-white border-white/20 h-14"
                       onClick={() => window.open(socialLinks.tiktok, '_blank')}
                     >
-                      <MessageCircle className="mr-2 h-4 w-4" />
+                      <Image 
+                        src="/assets/tiktoklogo.png" 
+                        alt="TikTok" 
+                        width={24} 
+                        height={24} 
+                        className="mr-2" 
+                      />
                       TikTok
                     </Button>
                   </CardContent>
@@ -885,31 +906,33 @@ export default function Component() {
       </footer>
 
       {/* Enhanced Scrolling Bottom Bar */}
-      <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 overflow-hidden h-12 md:h-14">
+      <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 overflow-hidden h-10">
         <motion.div 
-          className="flex items-center py-2 px-3 md:px-4"
+          className="flex items-center py-1.5 px-2"
           animate={socialControls}
         >
-          <div className="flex items-center gap-6 min-w-max">
+          <div className="flex items-center gap-4 min-w-max">
             {[
-              { icon: "@/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram },
-              { icon: "@/assets/xlogo.png", text: "X", link: socialLinks.twitter },
-              { icon: "@/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok },
-              { icon: "@/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener },
-              { icon: "@/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools },
+              { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
+              { icon: "/assets/xlogo.png", text: "X", link: socialLinks.twitter, size: 24 },
+              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 24 },
+              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 24 },
+              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 24 },
               { 
-                icon: "@/assets/coingeckologo.png", 
+                icon: "/assets/coingeckologo.png", 
                 text: "Soon", 
                 link: "#",
                 disabled: true,
-                comingSoon: true 
+                comingSoon: true,
+                size: 24
               },
               { 
-                icon: "@/assets/coinmarketcaplogo.png", 
+                icon: "/assets/coinmarketcaplogo.png", 
                 text: "Soon", 
                 link: "#",
                 disabled: true,
-                comingSoon: true 
+                comingSoon: true,
+                size: 24
               },
             ].map((item, index) => (
               <a 
@@ -918,7 +941,7 @@ export default function Component() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={item.disabled ? (e) => e.preventDefault() : undefined}
-                className={`flex items-center gap-2 ${
+                className={`flex items-center gap-1.5 ${
                   item.disabled 
                     ? 'cursor-not-allowed opacity-50' 
                     : 'hover:text-pink-300 hover:opacity-80'
@@ -928,17 +951,17 @@ export default function Component() {
                   <Image 
                     src={item.icon} 
                     alt={item.text} 
-                    width={24} 
-                    height={24} 
+                    width={item.size} 
+                    height={item.size} 
                     className={`${item.disabled ? 'grayscale' : ''}`}
                   />
                   {item.comingSoon && (
-                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[8px] px-1.5 py-0.5 rounded-full">
+                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">
                       Soon
                     </div>
                   )}
                 </div>
-                <span className="text-xs font-medium hidden sm:inline whitespace-nowrap">
+                <span className="text-[11px] font-medium hidden sm:inline whitespace-nowrap">
                   {item.text}
                 </span>
               </a>
