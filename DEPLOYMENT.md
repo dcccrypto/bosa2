@@ -8,6 +8,7 @@
   - FOUNDER_ADDRESS
   - ALLOWED_ORIGINS
   - NODE_ENV=production
+  - HELIUS_API_KEY
 - [ ] Run `npm run deploy:backend`
 - [ ] Verify health check endpoint
 - [ ] Monitor logs: `heroku logs --tail`
