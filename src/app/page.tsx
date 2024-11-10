@@ -77,7 +77,6 @@ export default function Component() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        setIsLoading(true)
         const data = await fetchTokenStats()
         setStats(data)
         
@@ -95,9 +94,7 @@ export default function Component() {
     }
 
     fetchStats()
-    
     const interval = setInterval(fetchStats, 60000)
-    
     return () => clearInterval(interval)
   }, [])
 
@@ -115,18 +112,15 @@ export default function Component() {
     })
 
     const animate = async () => {
-      while (true) {
-        await socialControls.start({
-          x: ["0%", "-50%"],
-          transition: {
-            x: {
-              duration: 15,
-              ease: "linear",
-              repeat: Infinity,
-            },
-          },
-        });
-      }
+      await socialControls.start({
+        x: "-50%",
+        transition: {
+          duration: 15,
+          repeat: Infinity,
+          repeatType: "loop",
+          ease: "linear",
+        },
+      });
     };
     
     animate();
@@ -142,17 +136,6 @@ export default function Component() {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 }
-  }
-
-  if (isLoading && !stats) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-pink-500 via-purple-500 to-blue-500">
-        <div className="text-white text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-lg">Loading token stats...</p>
-        </div>
-      </div>
-    );
   }
 
   if (error) {
@@ -853,15 +836,20 @@ export default function Component() {
 
       {/* Enhanced Scrolling Bottom Bar */}
       <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 overflow-hidden h-10">
-        <motion.div 
-          className="flex items-center py-1.5 px-2"
-          style={{ 
-            width: "fit-content",
-            display: "flex",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <div className="flex items-center gap-6" style={{ width: "max-content" }}>
+        <div className="flex items-center relative" style={{ width: "200%" }}>
+          <motion.div 
+            animate={socialControls}
+            className="flex items-center gap-6 py-1.5 px-2"
+            style={{ 
+              position: "absolute",
+              left: 0,
+              width: "50%",
+              display: "flex",
+              whiteSpace: "nowrap",
+              justifyContent: "space-around"
+            }}
+          >
+            {/* First set of items */}
             {[
               { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
               { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
@@ -882,7 +870,73 @@ export default function Component() {
                 disabled: true,
                 comingSoon: true,
                 size: 22
+              }
+            ].map((item, index) => (
+              <a 
+                key={index}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
+                className={`flex items-center gap-1.5 ${
+                  item.disabled 
+                    ? 'cursor-not-allowed opacity-50' 
+                    : 'hover:text-pink-300 hover:opacity-80'
+                } transition-all text-white relative group`}
+              >
+                <div className="relative">
+                  <Image 
+                    src={item.icon} 
+                    alt={item.text} 
+                    width={item.size} 
+                    height={item.size} 
+                    className={`${item.disabled ? 'grayscale' : ''}`}
+                  />
+                  {item.comingSoon && (
+                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">
+                      Soon
+                    </div>
+                  )}
+                </div>
+                <span className="text-[11px] font-medium hidden sm:inline whitespace-nowrap">
+                  {item.text}
+                </span>
+              </a>
+            ))}
+          </motion.div>
+          <div 
+            className="flex items-center gap-6 py-1.5 px-2"
+            style={{ 
+              position: "absolute",
+              left: "50%",
+              width: "50%",
+              display: "flex",
+              whiteSpace: "nowrap",
+              justifyContent: "space-around"
+            }}
+          >
+            {/* Duplicate set of items */}
+            {[
+              { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
+              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
+              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
+              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
+              { 
+                icon: "/assets/coingeckologo.png", 
+                text: "Soon", 
+                link: "#",
+                disabled: true,
+                comingSoon: true,
+                size: 22
               },
+              { 
+                icon: "/assets/coinmarketcaplogo.png", 
+                text: "Soon", 
+                link: "#",
+                disabled: true,
+                comingSoon: true,
+                size: 22
+              }
             ].map((item, index) => (
               <a 
                 key={index}
@@ -916,63 +970,7 @@ export default function Component() {
               </a>
             ))}
           </div>
-          {/* Duplicate content for seamless loop */}
-          <div className="flex items-center gap-6" style={{ width: "max-content" }}>
-            {[
-              { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
-              { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
-              { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
-              { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
-              { 
-                icon: "/assets/coingeckologo.png", 
-                text: "Soon", 
-                link: "#",
-                disabled: true,
-                comingSoon: true,
-                size: 22
-              },
-              { 
-                icon: "/assets/coinmarketcaplogo.png", 
-                text: "Soon", 
-                link: "#",
-                disabled: true,
-                comingSoon: true,
-                size: 22
-              },
-            ].map((item, index) => (
-              <a 
-                key={`duplicate-${index}`}
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
-                className={`flex items-center gap-1.5 ${
-                  item.disabled 
-                    ? 'cursor-not-allowed opacity-50' 
-                    : 'hover:text-pink-300 hover:opacity-80'
-                } transition-all text-white relative group`}
-              >
-                <div className="relative">
-                  <Image 
-                    src={item.icon} 
-                    alt={item.text} 
-                    width={item.size} 
-                    height={item.size} 
-                    className={`${item.disabled ? 'grayscale' : ''}`}
-                  />
-                  {item.comingSoon && (
-                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">
-                      Soon
-                    </div>
-                  )}
-                </div>
-                <span className="text-[11px] font-medium hidden sm:inline whitespace-nowrap">
-                  {item.text}
-                </span>
-              </a>
-            ))}
-          </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   )

@@ -1,25 +1,46 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+import axios from 'axios';
 
-export async function fetchTokenStats() {
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.bosa.wtf';
+
+export const fetchTokenStats = async () => {
   try {
-    console.log('[Frontend] Fetching token stats from:', `${API_URL}/api/token-stats`);
-    const response = await fetch(`${API_URL}/api/token-stats`, {
-      credentials: 'include',
+    const response = await axios.get(`${API_BASE_URL}/api/stats`, {
+      timeout: 5000, // 5 second timeout
       headers: {
-        'Accept': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
       }
     });
-    
-    if (!response.ok) {
-      console.error('[Frontend] HTTP error:', response.status, response.statusText);
-      throw new Error(`HTTP error! status: ${response.status}`);
+
+    if (response.status === 200) {
+      return response.data;
     }
     
-    const data = await response.json();
-    console.log('[Frontend] Received data:', data);
-    return data;
+    throw new Error('Failed to fetch token stats');
   } catch (error) {
-    console.error('[Frontend] Error fetching token stats:', error);
-    throw error;
+    console.error('Error fetching token stats:', error);
+    // Return cached or fallback data if available
+    return {
+      price: 0,
+      totalSupply: 0,
+      founderBalance: 0,
+      holders: 0,
+      lastUpdated: new Date().toISOString(),
+      cached: true,
+      error: true
+    };
   }
-}
+};
+
+// Add retry logic for failed requests
+const fetchWithRetry = async (url: string, retries = 3) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      if (i === retries - 1) throw error;
+      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+    }
+  }
+};
