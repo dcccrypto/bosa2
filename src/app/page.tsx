@@ -52,19 +52,17 @@ const socialLinks = {
 
 // Update the pie chart colors and styles
 const pieChartStyle = {
-  lineWidth: 8, // Even thinner for a more modern look
+  lineWidth: 4, // Even thinner for a more modern look
   animate: true,
   animationDuration: 1000,
   animationEasing: "cubic-bezier(0.4, 0, 0.2, 1)",
   radius: 35,
-  labelPosition: 80,
+  labelPosition: 0, // Remove labels from the pie chart
   labelStyle: {
-    fontSize: "14px",
-    fontWeight: "600",
-    fill: "#FFFFFF",
-    opacity: 1
+    fontSize: "0px", // Hide labels
+    fill: "transparent"
   },
-  colors: ["#10b981", "#3b82f6"], // Green for circulating, Blue for founder
+  colors: ["#10b981", "#3b82f6"],
   backgroundColor: "transparent",
   segmentsStyle: { transition: 'stroke-width 0.3s ease' }
 };
