@@ -465,6 +465,43 @@ export default function Component() {
         </div>
       </nav>
 
+      {/* Hero Image Section - Moved to top */}
+      <div className="relative w-full flex justify-center items-center py-12 mt-20">
+        <Sparkles>
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20
+            }}
+            className="relative group"
+          >
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
+            <motion.div
+              animate={{
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+              className="relative"
+            >
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-S3j8xrPUmlkpDVENpM943XrwtlnxYN.png"
+                alt="Bosa Hero"
+                width={200}
+                height={200}
+                className="rounded-full transform hover:scale-105 transition-transform duration-300"
+              />
+            </motion.div>
+          </motion.div>
+        </Sparkles>
+      </div>
+
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-6 pt-28">
         {/* Contract Address Section */}
