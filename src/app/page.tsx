@@ -140,7 +140,7 @@ function DeveloperPopup({ onClose }: { onClose: () => void }) {
             className="flex items-center gap-1.5 bg-blue-600/80 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
           >
             <Image 
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
+              src="/assets/telegramlogo.png" 
               alt="Telegram" 
               width={16} 
               height={16} 
@@ -154,7 +154,7 @@ function DeveloperPopup({ onClose }: { onClose: () => void }) {
             className="flex items-center gap-1.5 bg-black hover:bg-black/80 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
           >
             <Image 
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
+              src="/assets/xlogo.png" 
               alt="X (Twitter)" 
               width={14} 
               height={14} 
@@ -465,8 +465,8 @@ export default function Component() {
         </div>
       </nav>
 
-      {/* Hero Image Section - Moved to top */}
-      <div className="relative w-full flex justify-center items-center py-12 mt-20">
+      {/* Hero Image Section - Moved to top, right after nav */}
+      <div className="relative w-full flex justify-center items-center py-12 mt-8">
         <Sparkles>
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
@@ -1191,7 +1191,7 @@ export default function Component() {
                 className="flex items-center gap-2 bg-blue-600/80 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
               >
                 <Image 
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/telegramlogo.png" 
+                  src="/assets/telegramlogo.png" 
                   alt="Telegram" 
                   width={20} 
                   height={20} 
@@ -1205,7 +1205,7 @@ export default function Component() {
                 className="flex items-center gap-2 bg-black hover:bg-black/80 text-white px-4 py-2 rounded-lg transition-colors"
               >
                 <Image 
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/xlogo.png" 
+                  src="/assets/xlogo.png" 
                   alt="X (Twitter)" 
                   width={18} 
                   height={18} 
