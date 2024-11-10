@@ -9,10 +9,16 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    minimumCacheTTL: 60,
   },
   webpack: (config) => {
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
     return config;
+  },
+  // Add experimental features for better performance
+  experimental: {
+    optimizeCss: true,
+    scrollRestoration: true,
   },
 }
 

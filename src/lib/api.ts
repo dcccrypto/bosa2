@@ -12,36 +12,46 @@ const SOLANA_RPC_ENDPOINT = 'https://api.mainnet-beta.solana.com';
 const apiClient = axios.create({
   baseURL: 'https://data.solanatracker.io',
   headers: {
-    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+    'x-api-key': process.env.NEXT_PUBLIC_API_KEY,
   },
 });
 
-// Add fallback RPC endpoints and retry logic
+// Update RPC endpoints with more reliable ones
 const RPC_ENDPOINTS = [
   process.env.NEXT_PUBLIC_SOLANA_RPC_URL,
-  'https://api.mainnet-beta.solana.com',
-  'https://solana-api.projectserum.com',
-  'https://rpc.ankr.com/solana'
-];
+  'https://solana-mainnet.rpc.extrnode.com',
+  'https://rpc.ankr.com/solana',
+  'https://api.mainnet-beta.solana.com'
+].filter(Boolean); // Remove null/undefined endpoints
+
+// Add connection options for better reliability
+const connectionConfig = {
+  commitment: 'confirmed' as const,
+  confirmTransactionInitialTimeout: 60000,
+  disableRetryOnRateLimit: false,
+  fetch: fetch
+};
 
 async function getWorkingConnection() {
   for (const endpoint of RPC_ENDPOINTS) {
     if (!endpoint) continue;
     try {
-      const connection = new Connection(endpoint, 'confirmed');
-      // Test the connection
-      await connection.getLatestBlockhash();
+      const connection = new Connection(endpoint, connectionConfig);
+      // Test the connection with a lighter operation
+      await connection.getSlot();
+      console.log(`Connected to RPC endpoint: ${endpoint}`);
       return connection;
     } catch (error) {
-      console.warn(`Failed to connect to ${endpoint}, trying next...`);
+      console.warn(`Failed to connect to ${endpoint}, trying next...`, error);
     }
   }
   throw new Error('All RPC endpoints failed');
 }
 
+// Update retry logic with exponential backoff and jitter
 async function retryWithBackoff<T>(
   operation: () => Promise<T>,
-  maxRetries = 3,
+  maxRetries = 5,
   baseDelay = 1000
 ): Promise<T> {
   let lastError: Error | null = null;
@@ -52,8 +62,8 @@ async function retryWithBackoff<T>(
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
       if (i < maxRetries - 1) {
-        const delay = baseDelay * Math.pow(2, i);
-        console.log(`Retry ${i + 1}/${maxRetries} after ${delay}ms`);
+        const delay = baseDelay * Math.pow(2, i) * (0.5 + Math.random() * 0.5); // Add jitter
+        console.log(`Retry ${i + 1}/${maxRetries} after ${Math.round(delay)}ms`);
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
@@ -62,15 +72,32 @@ async function retryWithBackoff<T>(
   throw lastError;
 }
 
+// Update token price fetching with better error handling
 export async function getTokenPrice() {
   console.log('Fetching token price...');
   return retryWithBackoff(async () => {
     await priceRateLimiter.throttle();
-    const response = await apiClient.get('/price', {
-      params: { token: tokenAddress },
-    });
-    console.log('Token price fetched successfully:', response.data);
-    return response.data;
+    try {
+      const response = await apiClient.get('/price', {
+        params: { token: tokenAddress },
+        timeout: 10000, // Add timeout
+      });
+      if (!response.data || typeof response.data.price === 'undefined') {
+        throw new Error('Invalid price data received');
+      }
+      console.log('Token price fetched successfully:', response.data);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          throw new Error('API key is invalid or missing');
+        }
+        if (error.response?.status === 429) {
+          throw new Error('Rate limit exceeded');
+        }
+      }
+      throw error;
+    }
   });
 }
 
