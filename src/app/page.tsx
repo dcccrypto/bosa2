@@ -70,7 +70,7 @@ export default function Component() {
 
   const controls = useAnimation()
   const orbitControls = useAnimation()
-  const socialControls = useAnimation()
+  const socialControls = useAnimation();
 
   const contractAddress = '26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG'
 
@@ -114,17 +114,22 @@ export default function Component() {
       transition: { duration: 20, repeat: Infinity, ease: "linear" }
     })
 
-    socialControls.start({
-      x: [0, -1200],
-      transition: {
-        x: {
-          repeat: Infinity,
-          repeatType: "loop",
-          duration: 30,
-          ease: "linear",
-        },
-      },
-    })
+    const animate = async () => {
+      while (true) {
+        await socialControls.start({
+          x: ["0%", "-50%"],
+          transition: {
+            x: {
+              duration: 15,
+              ease: "linear",
+              repeat: Infinity,
+            },
+          },
+        });
+      }
+    };
+    
+    animate();
   }, [controls, orbitControls, socialControls])
 
   const copyToClipboard = () => {
@@ -850,10 +855,13 @@ export default function Component() {
       <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 overflow-hidden h-10">
         <motion.div 
           className="flex items-center py-1.5 px-2"
-          animate={socialControls}
-          style={{ width: "max-content" }}
+          style={{ 
+            width: "fit-content",
+            display: "flex",
+            whiteSpace: "nowrap",
+          }}
         >
-          <div className="flex items-center gap-6 min-w-max">
+          <div className="flex items-center gap-6" style={{ width: "max-content" }}>
             {[
               { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
               { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
@@ -875,14 +883,65 @@ export default function Component() {
                 comingSoon: true,
                 size: 22
               },
-              // Duplicate the items for seamless scrolling
+            ].map((item, index) => (
+              <a 
+                key={index}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
+                className={`flex items-center gap-1.5 ${
+                  item.disabled 
+                    ? 'cursor-not-allowed opacity-50' 
+                    : 'hover:text-pink-300 hover:opacity-80'
+                } transition-all text-white relative group`}
+              >
+                <div className="relative">
+                  <Image 
+                    src={item.icon} 
+                    alt={item.text} 
+                    width={item.size} 
+                    height={item.size} 
+                    className={`${item.disabled ? 'grayscale' : ''}`}
+                  />
+                  {item.comingSoon && (
+                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">
+                      Soon
+                    </div>
+                  )}
+                </div>
+                <span className="text-[11px] font-medium hidden sm:inline whitespace-nowrap">
+                  {item.text}
+                </span>
+              </a>
+            ))}
+          </div>
+          {/* Duplicate content for seamless loop */}
+          <div className="flex items-center gap-6" style={{ width: "max-content" }}>
+            {[
               { icon: "/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram, size: 26 },
               { icon: "/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok, size: 22 },
               { icon: "/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener, size: 22 },
               { icon: "/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools, size: 22 },
+              { 
+                icon: "/assets/coingeckologo.png", 
+                text: "Soon", 
+                link: "#",
+                disabled: true,
+                comingSoon: true,
+                size: 22
+              },
+              { 
+                icon: "/assets/coinmarketcaplogo.png", 
+                text: "Soon", 
+                link: "#",
+                disabled: true,
+                comingSoon: true,
+                size: 22
+              },
             ].map((item, index) => (
               <a 
-                key={index}
+                key={`duplicate-${index}`}
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
