@@ -197,13 +197,13 @@ function ScrollingTicker() {
                 item.soon ? 'cursor-not-allowed opacity-50' : 'hover:scale-110'
               }`}
             >
-              <div className="relative">
+              <div className="relative w-7 h-7">
                 <Image
                   src={item.logo}
                   alt={item.alt}
-                  width={28}
-                  height={28}
-                  className={`${item.soon ? 'grayscale' : ''}`}
+                  fill
+                  className={`object-contain ${item.soon ? 'grayscale' : ''}`}
+                  priority
                 />
                 {item.soon && (
                   <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-[7px] px-1 py-0.5 rounded-full">
