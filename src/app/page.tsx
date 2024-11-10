@@ -52,19 +52,19 @@ const socialLinks = {
 
 // Update the pie chart colors and styles
 const pieChartStyle = {
-  lineWidth: 15, // Much thinner width for a sleeker look
+  lineWidth: 8, // Even thinner for a more modern look
   animate: true,
   animationDuration: 1000,
   animationEasing: "cubic-bezier(0.4, 0, 0.2, 1)",
-  radius: 40,
-  labelPosition: 75,
+  radius: 35,
+  labelPosition: 80,
   labelStyle: {
-    fontSize: "12px",
-    fontWeight: "500",
+    fontSize: "14px",
+    fontWeight: "600",
     fill: "#FFFFFF",
-    opacity: 0.9
+    opacity: 1
   },
-  colors: ["#3B82F6", "#6366F1"], // Modern blue/indigo gradient
+  colors: ["#10b981", "#3b82f6"], // Green for circulating, Blue for founder
   backgroundColor: "transparent",
   segmentsStyle: { transition: 'stroke-width 0.3s ease' }
 };
