@@ -12,33 +12,73 @@ const SOLANA_RPC_ENDPOINT = 'https://api.mainnet-beta.solana.com';
 const apiClient = axios.create({
   baseURL: 'https://data.solanatracker.io',
   headers: {
-    'x-api-key': apiKey,
+    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
   },
 });
 
+// Add fallback RPC endpoints and retry logic
+const RPC_ENDPOINTS = [
+  process.env.NEXT_PUBLIC_SOLANA_RPC_URL,
+  'https://api.mainnet-beta.solana.com',
+  'https://solana-api.projectserum.com',
+  'https://rpc.ankr.com/solana'
+];
+
+async function getWorkingConnection() {
+  for (const endpoint of RPC_ENDPOINTS) {
+    if (!endpoint) continue;
+    try {
+      const connection = new Connection(endpoint, 'confirmed');
+      // Test the connection
+      await connection.getLatestBlockhash();
+      return connection;
+    } catch (error) {
+      console.warn(`Failed to connect to ${endpoint}, trying next...`);
+    }
+  }
+  throw new Error('All RPC endpoints failed');
+}
+
+async function retryWithBackoff<T>(
+  operation: () => Promise<T>,
+  maxRetries = 3,
+  baseDelay = 1000
+): Promise<T> {
+  let lastError: Error | null = null;
+  
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (i < maxRetries - 1) {
+        const delay = baseDelay * Math.pow(2, i);
+        console.log(`Retry ${i + 1}/${maxRetries} after ${delay}ms`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+  
+  throw lastError;
+}
+
 export async function getTokenPrice() {
   console.log('Fetching token price...');
-  try {
+  return retryWithBackoff(async () => {
     await priceRateLimiter.throttle();
     const response = await apiClient.get('/price', {
       params: { token: tokenAddress },
     });
     console.log('Token price fetched successfully:', response.data);
     return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.error('Error fetching token price:', error.response?.data || error.message);
-      throw new Error(`Failed to fetch token price: ${error.response?.data?.message || error.message}`);
-    }
-    throw error;
-  }
+  });
 }
 
 export async function fetchTotalTokenSupply() {
   console.log('Fetching total token supply...');
   try {
     await solanaRateLimiter.throttle();
-    const connection = new Connection(SOLANA_RPC_ENDPOINT, 'confirmed');
+    const connection = await getWorkingConnection();
     const mintPublicKey = new PublicKey(tokenAddress);
     const supplyResponse = await connection.getTokenSupply(mintPublicKey);
     console.log('Total supply fetched successfully:', supplyResponse.value.uiAmount);
@@ -52,7 +92,7 @@ export async function fetchTotalTokenSupply() {
 export async function fetchFounderBalance() {
   console.log('Fetching founder balance...');
   try {
-    const connection = new Connection(SOLANA_RPC_ENDPOINT, 'confirmed');
+    const connection = await getWorkingConnection();
     const walletPublicKey = new PublicKey(founderWalletAddress);
     const tokenAccounts = await connection.getTokenAccountsByOwner(walletPublicKey, {
       mint: new PublicKey(tokenAddress),
