@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback, useContext, createContext } from 'react'
-import { motion, AnimatePresence, useAnimation } from 'framer-motion'
+import { useState, useEffect, useCallback, useContext } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -17,18 +17,10 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import {
   ArrowRight,
   Rocket,
   BarChart3,
   Users,
-  MessageCircle,
-  Send,
   ShoppingCart,
   Copy,
   CheckCircle2,
@@ -39,7 +31,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import { fetchTokenStats } from '@/lib/api'
-import { PieChart } from 'react-minimal-pie-chart'
+import { StatsContext, StatsContextType } from '@/contexts/StatsContext'
 
 const socialLinks = {
   telegram: "https://t.me/SolBastardSOBA",
@@ -221,51 +213,7 @@ function ScrollingTicker() {
   );
 }
 
-// First, let's create the StatsContext
-interface StatsContextType {
-  stats: {
-    price: number;
-    totalSupply: number;
-    founderBalance: number;
-    holders: number;
-    lastUpdated: string;
-    cached?: boolean;
-    cacheAge?: number;
-  } | null;
-  founderPercentage: number;
-}
-
-export const StatsContext = createContext<StatsContextType>({
-  stats: null,
-  founderPercentage: 0
-});
-
-const contractAddress = "26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG";
-
-const fadeInUp = {
-  initial: {
-    y: 20,
-    opacity: 0
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
-  },
-  exit: {
-    y: 20,
-    opacity: 0,
-    transition: {
-      duration: 0.2,
-      ease: "easeIn"
-    }
-  }
-};
-
-export default function Component() {
+export default function Page() {
   const [stats, setStats] = useState<StatsContextType['stats']>(null);
   const [founderPercentage, setFounderPercentage] = useState(0);
   const [showDevPopup, setShowDevPopup] = useState(true);
@@ -273,11 +221,6 @@ export default function Component() {
   const [copied, setCopied] = useState(false);
   const [activeSection, setActiveSection] = useState('tokenomics');
 
-  const controls = useAnimation();
-  const orbitControls = useAnimation();
-  const socialControls = useAnimation();
-
-  // Provide the context values
   const statsContextValue = {
     stats,
     founderPercentage
@@ -1113,3 +1056,28 @@ function BurnCountdown() {
     </div>
   );
 }
+
+const contractAddress = "26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG";
+
+const fadeInUp = {
+  initial: {
+    y: 20,
+    opacity: 0
+  },
+  animate: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  },
+  exit: {
+    y: 20,
+    opacity: 0,
+    transition: {
+      duration: 0.2,
+      ease: "easeIn"
+    }
+  }
+};
