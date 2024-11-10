@@ -37,8 +37,8 @@ const socialLinks = {
   telegram: "https://t.me/SolBastardSOBA",
   tiktok: "https://www.tiktok.com/@cryptobastard",
   twitter: "https://x.com/cryptobastardTX",
-  dexscreener: "https://dexscreener.com/solana/an4avu6vdi7askenb2hpadltzrxdeggb8odqpa7shkg3",
-  dextools: "https://www.dextools.io/app/en/solana/pair-explorer/An4aVu6Vdi7AskENb2HpadLTZRXDeGgB8odQPa7ShkG3?t=1731274368408",
+  dexscreener: "https://dexscreener.com/solana/26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG",
+  dextools: "https://www.dextools.io/app/en/solana/pair-explorer/26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG",
   buy: "https://jup.ag/swap/SOL-26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG",
   soba: "https://solbastard.com"
 };
@@ -162,7 +162,11 @@ function DeveloperPopup({ onClose }: { onClose: () => void }) {
   );
 }
 
-function ScrollingTicker() {
+interface ScrollingTickerProps {
+  className?: string;
+}
+
+function ScrollingTicker({ className }: ScrollingTickerProps) {
   const tickerItems = [
     { logo: '/assets/dexscreenerlogo.png', alt: 'DexScreener', link: socialLinks.dexscreener },
     { logo: '/assets/dextoolslogo.png', alt: 'DexTools', link: socialLinks.dextools },
@@ -173,11 +177,10 @@ function ScrollingTicker() {
     { logo: '/assets/coinmarketcaplogo.png', alt: 'CoinMarketCap', link: '#', soon: true },
   ];
 
-  // Duplicate the items to create a seamless loop
   const allItems = [...tickerItems, ...tickerItems];
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-blue-600/80 via-indigo-600/80 to-purple-600/80 backdrop-blur-md border-t border-white/10 safe-bottom z-50">
+    <div className={`fixed bottom-0 left-0 w-full bg-gradient-to-r from-blue-600/80 via-indigo-600/80 to-purple-600/80 backdrop-blur-md border-t border-white/10 safe-bottom z-50 ${className}`}>
       <div className="relative flex overflow-hidden h-16">
         <div className="animate-ticker flex gap-12 items-center whitespace-nowrap py-3 px-4">
           {allItems.map((item, index) => (
@@ -509,7 +512,7 @@ export default function Page() {
                   <Button
                     variant="outline"
                     className="bg-white/10 hover:bg-white/20 text-white border-white/20 w-full"
-                    onClick={() => window.open('https://dexscreener.com', '_blank')}
+                    onClick={() => window.open(socialLinks.dexscreener, '_blank')}
                   >
                     <Image src="/assets/dexscreenerlogo.png" alt="DexScreener" width={24} height={24} className="mr-2" />
                     DexScreener
@@ -517,26 +520,28 @@ export default function Page() {
                   <Button
                     variant="outline"
                     className="bg-white/10 hover:bg-white/20 text-white border-white/20 w-full"
-                    onClick={() => window.open('https://dextools.io', '_blank')}
+                    onClick={() => window.open(socialLinks.dextools, '_blank')}
                   >
                     <Image src="/assets/dextoolslogo.png" alt="DexTools" width={24} height={24} className="mr-2" />
                     DexTools
                   </Button>
                   <Button
                     variant="outline"
-                    className="bg-white/10 hover:bg-white/20 text-white border-white/20 w-full"
-                    onClick={() => window.open('https://coingecko.com', '_blank')}
+                    className="bg-white/10 hover:bg-white/20 text-white border-white/20 w-full opacity-50 cursor-not-allowed"
+                    disabled
                   >
                     <Image src="/assets/coingeckologo.png" alt="CoinGecko" width={24} height={24} className="mr-2" />
-                    CoinGecko
+                    <Lock className="w-4 h-4 mr-1" />
+                    Soon
                   </Button>
                   <Button
                     variant="outline"
-                    className="bg-white/10 hover:bg-white/20 text-white border-white/20 w-full"
-                    onClick={() => window.open('https://coinmarketcap.com', '_blank')}
+                    className="bg-white/10 hover:bg-white/20 text-white border-white/20 w-full opacity-50 cursor-not-allowed"
+                    disabled
                   >
                     <Image src="/assets/coinmarketcaplogo.png" alt="CoinMarketCap" width={24} height={24} className="mr-2" />
-                    CMC
+                    <Lock className="w-4 h-4 mr-1" />
+                    Soon
                   </Button>
                 </div>
               </div>
@@ -942,7 +947,7 @@ export default function Page() {
         </footer>
 
         {/* Static developer section */}
-        <div className="w-full bg-black/30 backdrop-blur-lg py-8 border-t border-white/10">
+        <div className="w-full bg-black/30 backdrop-blur-lg py-8 border-t border-white/10 mt-auto">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="text-white text-center md:text-left">
@@ -986,7 +991,7 @@ export default function Page() {
         {/* Popup component */}
         {showDevPopup && <DeveloperPopup onClose={() => setShowDevPopup(false)} />}
 
-        <ScrollingTicker />
+        <ScrollingTicker className="mb-8" />
       </div>
     </StatsContext.Provider>
   )
