@@ -52,20 +52,21 @@ const socialLinks = {
 
 // Update the pie chart colors and styles
 const pieChartStyle = {
-  lineWidth: 40, // Slightly thinner width for a sleeker look
+  lineWidth: 15, // Much thinner width for a sleeker look
   animate: true,
-  animationDuration: 1200, // Slightly longer duration for smoother animation
-  animationEasing: "ease-in-out", // Softer easing effect for a gradual animation
-  radius: 50,
-  labelPosition: 80, // Slightly farther out for better visibility
+  animationDuration: 1000,
+  animationEasing: "cubic-bezier(0.4, 0, 0.2, 1)",
+  radius: 40,
+  labelPosition: 75,
   labelStyle: {
-    fontSize: "10px", // Larger font size for better readability
-    fontWeight: "bold",
-    fill: "#FFFFFF", // Ensures contrast against the chart colors
-    textShadow: "0px 0px 5px rgba(0, 0, 0, 0.3)" // Adds a subtle shadow for clarity
+    fontSize: "12px",
+    fontWeight: "500",
+    fill: "#FFFFFF",
+    opacity: 0.9
   },
-  colors: ["#4A90E2", "#50E3C2"], // Modern color scheme
-  backgroundColor: "transparent", // Ensures it blends with the page background
+  colors: ["#3B82F6", "#6366F1"], // Modern blue/indigo gradient
+  backgroundColor: "transparent",
+  segmentsStyle: { transition: 'stroke-width 0.3s ease' }
 };
 
 function Sparkles({ children }: { children: React.ReactNode }) {
@@ -473,6 +474,33 @@ export default function Component() {
           </AnimatePresence>
         </div>
       </nav>
+
+      {/* Hero Section */}
+      <div className="relative w-full flex justify-center items-center py-12 mt-8">
+        <Sparkles>
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20
+            }}
+            className="relative group"
+          >
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
+            <div className="relative">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-S3j8xrPUmlkpDVENpM943XrwtlnxYN.png"
+                alt="Bosa Hero"
+                width={200}
+                height={200}
+                className="rounded-full transform hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          </motion.div>
+        </Sparkles>
+      </div>
 
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-6 pt-28">
