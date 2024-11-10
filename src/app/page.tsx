@@ -795,7 +795,7 @@ export default function Component() {
                     rel="noopener noreferrer"
                     className="text-white/70 hover:text-white transition-colors flex items-center"
                   >
-                    <Image src="/assets/telegramlogo.png" alt="Telegram" width={20} height={20} className="mr-2" />
+                    <Image src="/assets/telegramlogo.png" alt="Telegram" width={30} height={30} className="mr-2" />
                     Telegram
                   </a>
                 </li>
@@ -865,7 +865,7 @@ export default function Component() {
               <div className="flex items-center gap-4">
                 <a href={socialLinks.dexscreener} target="_blank" rel="noopener noreferrer">
                   <Image 
-                    src="@/assets/dexscreenerlogo.png" 
+                    src="/assets/dexscreenerlogo.png" 
                     alt="DexScreener" 
                     width={32} 
                     height={32} 
@@ -874,7 +874,7 @@ export default function Component() {
                 </a>
                 <a href={socialLinks.dextools} target="_blank" rel="noopener noreferrer">
                   <Image 
-                    src="@/assets/dextoolslogo.png" 
+                    src="/assets/dextoolslogo.png" 
                     alt="DexTools" 
                     width={32} 
                     height={32} 
@@ -883,7 +883,7 @@ export default function Component() {
                 </a>
                 <div className="opacity-50 cursor-not-allowed">
                   <Image 
-                    src="@/assets/coingeckologo.png" 
+                    src="/assets/coingeckologo.png" 
                     alt="CoinGecko" 
                     width={32} 
                     height={32} 
@@ -892,7 +892,7 @@ export default function Component() {
                 </div>
                 <div className="opacity-50 cursor-not-allowed">
                   <Image 
-                    src="@/assets/coinmarketcaplogo.png" 
+                    src="/assets/coinmarketcaplogo.png" 
                     alt="CoinMarketCap" 
                     width={32} 
                     height={32} 
