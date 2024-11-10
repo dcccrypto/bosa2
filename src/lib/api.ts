@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.bosa.wtf';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://bosa-api-5cea7419d839.herokuapp.com';
 
 export const fetchTokenStats = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/stats`, {
-      timeout: 5000, // 5 second timeout
+    const response = await axios.get(`${API_BASE_URL}/api/token-stats`, {
+      timeout: 5000,
       headers: {
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
@@ -19,7 +19,6 @@ export const fetchTokenStats = async () => {
     throw new Error('Failed to fetch token stats');
   } catch (error) {
     console.error('Error fetching token stats:', error);
-    // Return cached or fallback data if available
     return {
       price: 0,
       totalSupply: 0,
