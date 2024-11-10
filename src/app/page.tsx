@@ -947,7 +947,7 @@ export default function Page() {
         </footer>
 
         {/* Static developer section */}
-        <div className="w-full bg-black/30 backdrop-blur-lg py-8 border-t border-white/10 mt-auto mb-16">
+        <div className="w-full bg-black/30 backdrop-blur-lg py-8 border-t border-white/10 mt-auto mb-24">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="text-white text-center md:text-left">
