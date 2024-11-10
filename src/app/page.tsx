@@ -706,23 +706,26 @@ export default function Component() {
                     <Button
                       variant="outline"
                       className="bg-white/10 hover:bg-white/20 text-white border-white/20"
+                      onClick={() => window.open(socialLinks.telegram, '_blank')}
                     >
-                      <MessageCircle className="mr-2" />
-                      Discord
+                      <Send className="mr-2 h-4 w-4" />
+                      Telegram
                     </Button>
                     <Button
                       variant="outline"
                       className="bg-white/10 hover:bg-white/20 text-white border-white/20"
+                      onClick={() => window.open(socialLinks.twitter, '_blank')}
                     >
-                      <X className="mr-2" />
+                      <X className="mr-2 h-4 w-4" />
                       X (Twitter)
                     </Button>
                     <Button
                       variant="outline"
                       className="bg-white/10 hover:bg-white/20 text-white border-white/20"
+                      onClick={() => window.open(socialLinks.tiktok, '_blank')}
                     >
-                      <Send className="mr-2" />
-                      Telegram
+                      <MessageCircle className="mr-2 h-4 w-4" />
+                      TikTok
                     </Button>
                   </CardContent>
                 </Card>
@@ -839,10 +842,42 @@ export default function Component() {
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-white font-medium text-lg">© Bosa. All rights reserved.</p>
               <div className="flex items-center gap-4">
-                <Image src="/assets/dexscreenerlogo.png" alt="DexScreener" width={24} height={24} className="opacity-70 hover:opacity-100 transition-opacity" />
-                <Image src="/assets/dextoolslogo.png" alt="DexTools" width={24} height={24} className="opacity-70 hover:opacity-100 transition-opacity" />
-                <Image src="/assets/coingeckologo.png" alt="CoinGecko" width={24} height={24} className="opacity-70 hover:opacity-100 transition-opacity" />
-                <Image src="/assets/coinmarketcaplogo.png" alt="CoinMarketCap" width={24} height={24} className="opacity-70 hover:opacity-100 transition-opacity" />
+                <a href={socialLinks.dexscreener} target="_blank" rel="noopener noreferrer">
+                  <Image 
+                    src="@/assets/dexscreenerlogo.png" 
+                    alt="DexScreener" 
+                    width={32} 
+                    height={32} 
+                    className="opacity-70 hover:opacity-100 transition-opacity"
+                  />
+                </a>
+                <a href={socialLinks.dextools} target="_blank" rel="noopener noreferrer">
+                  <Image 
+                    src="@/assets/dextoolslogo.png" 
+                    alt="DexTools" 
+                    width={32} 
+                    height={32} 
+                    className="opacity-70 hover:opacity-100 transition-opacity"
+                  />
+                </a>
+                <div className="opacity-50 cursor-not-allowed">
+                  <Image 
+                    src="@/assets/coingeckologo.png" 
+                    alt="CoinGecko" 
+                    width={32} 
+                    height={32} 
+                    className="opacity-70 grayscale"
+                  />
+                </div>
+                <div className="opacity-50 cursor-not-allowed">
+                  <Image 
+                    src="@/assets/coinmarketcaplogo.png" 
+                    alt="CoinMarketCap" 
+                    width={32} 
+                    height={32} 
+                    className="opacity-70 grayscale"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -850,26 +885,28 @@ export default function Component() {
       </footer>
 
       {/* Enhanced Scrolling Bottom Bar */}
-      <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 overflow-hidden h-16 md:h-20">
-        <motion.div className="flex items-center gap-6 md:gap-12 py-4 px-4 md:px-6">
-          <div className="flex items-center gap-6 md:gap-12 min-w-max">
-            {/* Social and DEX links with consistent 32x32 sizing */}
+      <div className="fixed bottom-0 left-0 w-full bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 overflow-hidden h-12 md:h-14">
+        <motion.div 
+          className="flex items-center py-2 px-3 md:px-4"
+          animate={socialControls}
+        >
+          <div className="flex items-center gap-6 min-w-max">
             {[
-              { icon: "@/assets/telegramlogo.png", text: "Join Telegram", link: socialLinks.telegram },
-              { icon: "@/assets/xlogo.png", text: "Follow on X", link: socialLinks.twitter },
-              { icon: "@/assets/tiktoklogo.png", text: "Follow on TikTok", link: socialLinks.tiktok },
+              { icon: "@/assets/telegramlogo.png", text: "Telegram", link: socialLinks.telegram },
+              { icon: "@/assets/xlogo.png", text: "X", link: socialLinks.twitter },
+              { icon: "@/assets/tiktoklogo.png", text: "TikTok", link: socialLinks.tiktok },
               { icon: "@/assets/dexscreenerlogo.png", text: "DexScreener", link: socialLinks.dexscreener },
               { icon: "@/assets/dextoolslogo.png", text: "DexTools", link: socialLinks.dextools },
               { 
                 icon: "@/assets/coingeckologo.png", 
-                text: "CoinGecko (Coming Soon)", 
+                text: "Soon", 
                 link: "#",
                 disabled: true,
                 comingSoon: true 
               },
               { 
                 icon: "@/assets/coinmarketcaplogo.png", 
-                text: "CoinMarketCap (Coming Soon)", 
+                text: "Soon", 
                 link: "#",
                 disabled: true,
                 comingSoon: true 
@@ -878,12 +915,14 @@ export default function Component() {
               <a 
                 key={index}
                 href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={item.disabled ? (e) => e.preventDefault() : undefined}
-                className={`flex items-center gap-2 md:gap-3 ${
+                className={`flex items-center gap-2 ${
                   item.disabled 
                     ? 'cursor-not-allowed opacity-50' 
-                    : 'hover:text-pink-300'
-                } transition-colors text-white relative group`}
+                    : 'hover:text-pink-300 hover:opacity-80'
+                } transition-all text-white relative group`}
               >
                 <div className="relative">
                   <Image 
@@ -891,15 +930,15 @@ export default function Component() {
                     alt={item.text} 
                     width={24} 
                     height={24} 
-                    className={`md:w-8 md:h-8 ${item.disabled ? 'grayscale' : ''}`}
+                    className={`${item.disabled ? 'grayscale' : ''}`}
                   />
                   {item.comingSoon && (
-                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[10px] px-1 rounded-full">
+                    <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[8px] px-1.5 py-0.5 rounded-full">
                       Soon
                     </div>
                   )}
                 </div>
-                <span className="text-xs md:text-sm font-medium hidden sm:inline">
+                <span className="text-xs font-medium hidden sm:inline whitespace-nowrap">
                   {item.text}
                 </span>
               </a>
