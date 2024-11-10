@@ -35,6 +35,7 @@ import {
   Copy,
   CheckCircle2,
   Lock,
+  DollarSign,
 } from 'lucide-react'
 import Image from 'next/image'
 import { fetchTokenStats } from '@/lib/api'
@@ -374,53 +375,45 @@ export default function Component() {
                     <CardTitle className="text-white">Tokenomics & Analytics</CardTitle>
                   </CardHeader>
                   <CardContent className="grid gap-6">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-4 text-white">
-                      <div className="text-center p-4 rounded-lg bg-white/5">
-                        <Wallet className="w-8 h-8 mx-auto mb-2" />
-                        <div className="text-2xl font-bold">0%</div>
-                        <div className="text-white/70">Tax</div>
-                        <div className="text-sm text-white/50 mt-1">$BOSA</div>
-                      </div>
-                      <div className="text-center p-4 rounded-lg bg-white/5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                      <div className="text-center p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors duration-200">
                         <BarChart3 className="w-8 h-8 mx-auto mb-2" />
                         <div className="text-2xl font-bold">
                           {stats ? (
                             new Intl.NumberFormat('en-US').format(stats.totalSupply)
                           ) : (
-                            <span className="animate-pulse">Loading...</span>
+                            <div className="h-8 bg-white/20 rounded animate-pulse"></div>
                           )}
                         </div>
                         <div className="text-white/70">Total Supply</div>
                       </div>
-                      <div className="text-center p-4 rounded-lg bg-white/5">
-                        <BarChart3 className="w-8 h-8 mx-auto mb-2" />
+                      
+                      <div className="text-center p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors duration-200">
+                        <DollarSign className="w-8 h-8 mx-auto mb-2" />
                         <div className="text-2xl font-bold">
                           {stats ? (
                             `$${stats.price.toFixed(8)}`
                           ) : (
-                            <span className="animate-pulse">Loading...</span>
+                            <div className="h-8 bg-white/20 rounded animate-pulse"></div>
                           )}
                         </div>
                         <div className="text-white/70">Current Price</div>
                       </div>
-                      <div className="text-center p-4 rounded-lg bg-white/5">
-                        <BarChart3 className="w-8 h-8 mx-auto mb-2" />
-                        <div className="text-2xl font-bold">100%</div>
-                        <div className="text-white/70">All Supply in Circulation</div>
-                      </div>
-                      <div className="text-center p-4 rounded-lg bg-white/5">
+                      
+                      <div className="text-center p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors duration-200">
                         <Users className="w-8 h-8 mx-auto mb-2" />
                         <div className="text-2xl font-bold">
                           {stats ? (
                             new Intl.NumberFormat('en-US').format(stats.holders)
                           ) : (
-                            <span className="animate-pulse">Loading...</span>
+                            <div className="h-8 bg-white/20 rounded animate-pulse"></div>
                           )}
                         </div>
                         <div className="text-white/70">Token Holders</div>
                         <div className="text-sm text-white/50 mt-1">Growing Daily</div>
                       </div>
-                      <div className="text-center p-4 rounded-lg bg-white/5">
+                      
+                      <div className="text-center p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors duration-200">
                         <Lock className="w-8 h-8 mx-auto mb-2" />
                         <div className="text-2xl font-bold">
                           {stats ? (
@@ -428,7 +421,7 @@ export default function Component() {
                               maximumFractionDigits: 0
                             }).format(stats.founderBalance)
                           ) : (
-                            <span className="animate-pulse">Loading...</span>
+                            <div className="h-8 bg-white/20 rounded animate-pulse"></div>
                           )}
                         </div>
                         <div className="text-white/70">Founder Holdings</div>
@@ -439,37 +432,70 @@ export default function Component() {
                     </div>
                     
                     {/* Distribution Pie Chart */}
-                    <div className="bg-white/5 rounded-lg p-6">
+                    <div className="bg-white/5 rounded-lg p-6 hover:bg-white/10 transition-colors duration-200">
                       <h3 className="text-white text-lg font-semibold mb-4">Token Distribution</h3>
-                      <div className="flex items-center justify-between">
-                        <div className="w-1/2">
-                          <PieChart
-                            data={[
-                              { title: 'Founder', value: founderPercentage, color: '#ec4899' },
-                              { title: 'Circulating', value: circulatingPercentage, color: '#8b5cf6' }
-                            ]}
-                            lineWidth={20}
-                            paddingAngle={2}
-                            rounded
-                            animate
-                            label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
-                            labelStyle={{
-                              fontSize: '6px',
-                              fill: '#fff',
-                            }}
-                            labelPosition={70}
-                          />
+                      <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="w-full md:w-2/5 max-w-[300px] relative group">
+                          <div className="transform transition-transform duration-300 group-hover:scale-105">
+                            <PieChart
+                              data={[
+                                { 
+                                  title: 'Founder', 
+                                  value: founderPercentage, 
+                                  color: '#ec4899',
+                                  description: `${new Intl.NumberFormat('en-US').format(stats?.founderBalance || 0)} tokens`
+                                },
+                                { 
+                                  title: 'Circulating', 
+                                  value: circulatingPercentage, 
+                                  color: '#8b5cf6',
+                                  description: `${new Intl.NumberFormat('en-US').format((stats?.totalSupply || 0) - (stats?.founderBalance || 0))} tokens`
+                                }
+                              ]}
+                              lineWidth={25}
+                              paddingAngle={2}
+                              rounded
+                              animate
+                              animationDuration={800}
+                              label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
+                              labelStyle={{
+                                fontSize: '5px',
+                                fill: '#fff',
+                                fontWeight: 'bold',
+                              }}
+                              labelPosition={75}
+                              segmentsStyle={{ transition: 'stroke-width 0.2s' }}
+                              segmentsShift={1}
+                              onMouseOver={(_, index) => {
+                                console.log(`Segment ${index} hovered`);
+                              }}
+                            />
+                          </div>
                         </div>
-                        <div className="w-1/2 pl-8">
-                          <div className="space-y-4">
+                        <div className="w-full md:w-3/5 space-y-4">
+                          <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-200">
                             <div className="flex items-center">
-                              <div className="w-4 h-4 rounded-full bg-pink-500 mr-2"></div>
-                              <span className="text-white">Founder Holdings ({founderPercentage.toFixed(2)}%)</span>
+                              <div className="w-4 h-4 rounded-full bg-pink-500 mr-3"></div>
+                              <div>
+                                <div className="text-white font-medium">Founder Holdings</div>
+                                <div className="text-white/70 text-sm">
+                                  {new Intl.NumberFormat('en-US').format(stats?.founderBalance || 0)} tokens
+                                </div>
+                              </div>
                             </div>
+                            <div className="text-white font-bold">{founderPercentage.toFixed(2)}%</div>
+                          </div>
+                          <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-200">
                             <div className="flex items-center">
-                              <div className="w-4 h-4 rounded-full bg-purple-500 mr-2"></div>
-                              <span className="text-white">Circulating Supply ({circulatingPercentage.toFixed(2)}%)</span>
+                              <div className="w-4 h-4 rounded-full bg-purple-500 mr-3"></div>
+                              <div>
+                                <div className="text-white font-medium">Circulating Supply</div>
+                                <div className="text-white/70 text-sm">
+                                  {new Intl.NumberFormat('en-US').format((stats?.totalSupply || 0) - (stats?.founderBalance || 0))} tokens
+                                </div>
+                              </div>
                             </div>
+                            <div className="text-white font-bold">{circulatingPercentage.toFixed(2)}%</div>
                           </div>
                         </div>
                       </div>
