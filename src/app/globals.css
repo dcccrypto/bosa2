@@ -200,3 +200,23 @@ body {
 * {
   -webkit-overflow-scrolling: touch;
 }
+
+/* Add these at the end of your file */
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.5);
+  }
+}
+
+.sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+.sparkle-wrapper {
+  pointer-events: none;
+}

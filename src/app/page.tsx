@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import {
@@ -64,6 +64,59 @@ const pieChartStyle = {
     fill: "#fff",
   }
 };
+
+function Sparkles({ children }: { children: React.ReactNode }) {
+  const generateSparkle = useCallback(() => ({
+    id: Math.random(),
+    createdAt: Date.now(),
+    color: 'white',
+    size: Math.random() * 10 + 5,
+    style: {
+      top: Math.random() * 100 + '%',
+      left: Math.random() * 100 + '%',
+      zIndex: 2
+    }
+  }), [])
+
+  const [sparkles, setSparkles] = useState(() => {
+    return Array.from({ length: 20 }, () => generateSparkle())
+  })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSparkles(sparkles => {
+        const now = Date.now()
+        const newSparkles = sparkles
+          .filter(sparkle => now - sparkle.createdAt < 750)
+          .concat(generateSparkle())
+        return newSparkles
+      })
+    }, 50)
+
+    return () => clearInterval(interval)
+  }, [generateSparkle])
+
+  return (
+    <div className="relative inline-block">
+      {sparkles.map(sparkle => (
+        <motion.span
+          key={sparkle.id}
+          className="absolute inline-block rounded-full bg-white pointer-events-none"
+          style={{
+            ...sparkle.style,
+            width: sparkle.size,
+            height: sparkle.size
+          }}
+          initial={{ scale: 0, opacity: 1 }}
+          animate={{ scale: 1, opacity: 0 }}
+          exit={{ scale: 0, opacity: 0 }}
+          transition={{ duration: 0.75 }}
+        />
+      ))}
+      {children}
+    </div>
+  )
+}
 
 export default function Component() {
   const [activeSection, setActiveSection] = useState('tokenomics')
@@ -838,43 +891,41 @@ export default function Component() {
       </footer>
 
       {/* After the footer and before the scrolling bottom bar */}
-      <div className="bg-black/30 backdrop-blur-lg py-6 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="text-white text-center md:text-left">
-              <p className="text-lg font-medium">Looking for a stunning website for your memecoin?</p>
-              <p className="text-white/70">This website was crafted by me! Reach out for professional web development services.</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <a 
-                href="https://t.me/plug2k" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                <Image 
-                  src="/assets/telegramlogo.png" 
-                  alt="Telegram" 
-                  width={24} 
-                  height={24} 
-                />
-                <span>Contact on Telegram</span>
-              </a>
-              <a 
-                href="https://x.com/dcc_crypto" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-black hover:bg-black/80 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                <Image 
-                  src="/assets/xlogo.png" 
-                  alt="X (Twitter)" 
-                  width={20} 
-                  height={20} 
-                />
-                <span>Follow on X</span>
-              </a>
-            </div>
+      <div className="fixed bottom-16 right-4 max-w-sm backdrop-blur-lg bg-black/30 rounded-lg p-4 shadow-xl border border-white/10">
+        <div className="flex flex-col gap-3">
+          <div className="text-white">
+            <p className="text-sm font-medium">Looking for a stunning website for your memecoin?</p>
+            <p className="text-xs text-white/70">This website was crafted by me! Reach out for professional web development services.</p>
+          </div>
+          <div className="flex gap-2">
+            <a 
+              href="https://t.me/plug2k" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 bg-blue-600/80 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
+            >
+              <Image 
+                src="/assets/telegramlogo.png" 
+                alt="Telegram" 
+                width={16} 
+                height={16} 
+              />
+              <span>Contact on Telegram</span>
+            </a>
+            <a 
+              href="https://x.com/dcc_crypto" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 bg-black hover:bg-black/80 text-white px-3 py-1.5 rounded-md transition-colors text-xs"
+            >
+              <Image 
+                src="/assets/xlogo.png" 
+                alt="X (Twitter)" 
+                width={14} 
+                height={14} 
+              />
+              <span>Follow on X</span>
+            </a>
           </div>
         </div>
       </div>
@@ -999,6 +1050,42 @@ export default function Component() {
             ))}
           </motion.div>
         </div>
+      </div>
+
+      <div className="relative w-full flex justify-center items-center py-20">
+        <Sparkles>
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20
+            }}
+            className="relative group"
+          >
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
+            <motion.div
+              animate={{
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+              className="relative"
+            >
+              <Image
+                src="/assets/vercel.png"
+                alt="Vercel"
+                width={200}
+                height={200}
+                className="rounded-full transform hover:scale-105 transition-transform duration-300"
+              />
+            </motion.div>
+          </motion.div>
+        </Sparkles>
       </div>
     </div>
   )
