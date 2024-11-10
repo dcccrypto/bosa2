@@ -52,14 +52,14 @@ const socialLinks = {
 
 // Update the pie chart colors and styles
 const pieChartStyle = {
-  lineWidth: 4, // Even thinner for a more modern look
+  lineWidth: 3, // Thinner for more modern look
   animate: true,
   animationDuration: 1000,
   animationEasing: "cubic-bezier(0.4, 0, 0.2, 1)",
   radius: 35,
-  labelPosition: 0, // Remove labels from the pie chart
+  labelPosition: 0,
   labelStyle: {
-    fontSize: "0px", // Hide labels
+    fontSize: "0px",
     fill: "transparent"
   },
   colors: ["#10b981", "#3b82f6"],
@@ -122,7 +122,7 @@ function Sparkles({ children }: { children: React.ReactNode }) {
 
 function DeveloperPopup({ onClose }: { onClose: () => void }) {
   return (
-    <div className="fixed bottom-16 right-4 max-w-sm backdrop-blur-lg bg-black/30 rounded-lg p-4 shadow-xl border border-white/10 z-50">
+    <div className="fixed bottom-16 right-4 max-w-sm backdrop-blur-lg bg-black/30 rounded-lg p-4 shadow-xl border border-white/10 z-[60]">
       <button 
         onClick={onClose}
         className="absolute top-2 right-2 text-white/60 hover:text-white"
@@ -284,7 +284,7 @@ export default function Component() {
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500 animate-gradient-y">
       {/* Navigation */}
       <nav className="fixed top-0 w-full backdrop-blur-lg bg-white/10 z-50">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
               <Image
@@ -474,7 +474,7 @@ export default function Component() {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative w-full flex justify-center items-center py-12 mt-8">
+      <div className="relative w-full flex justify-center items-center pt-32 pb-16">
         <Sparkles>
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
@@ -489,11 +489,12 @@ export default function Component() {
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
             <div className="relative">
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-S3j8xrPUmlkpDVENpM943XrwtlnxYN.png"
+                src="/assets/bosalogo.png"
                 alt="Bosa Hero"
-                width={200}
-                height={200}
+                width={240}
+                height={240}
                 className="rounded-full transform hover:scale-105 transition-transform duration-300"
+                priority
               />
             </div>
           </motion.div>
