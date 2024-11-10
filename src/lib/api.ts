@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { Connection, PublicKey } from '@solana/web3.js';
 
 // API configuration
-const apiKey = '01221e00-46a1-42e1-b08d-d0541891b441';
+const apiKey = process.env.API_KEY;
 const tokenAddress = '26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG';
 const founderWalletAddress = '7wtbTXc7Lyxt1enezJa7eNyNxenaLYsmBeiZTsA3KvwL';
 const SOLANA_RPC_ENDPOINT = 'https://api.mainnet-beta.solana.com';
