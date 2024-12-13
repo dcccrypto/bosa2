@@ -1008,7 +1008,7 @@ function BurnCountdown() {
   const { stats, founderPercentage } = useContext(StatsContext);
 
   useEffect(() => {
-    const burnDate = new Date('2024-11-13T15:00:00.000Z'); // 10 AM Central Time
+    const burnDate = new Date('2024-12-16T15:00:00.000Z'); // 10 AM Central Time
     
     const calculateTimeLeft = () => {
       const now = new Date();
