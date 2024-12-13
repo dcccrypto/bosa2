@@ -689,7 +689,7 @@ export default function Page() {
                             <CheckCircle2 className="w-5 h-5 text-pink-500 mt-1" />
                             <span>
                               {stats ? (
-                                `Massive ${founderPercentage.toFixed(2)}% burn event (${new Intl.NumberFormat('en-US').format(stats.founderBalance)} tokens) scheduled for November 13th, 2024`
+                                `Massive ${founderPercentage.toFixed(2)}% burn event (${new Intl.NumberFormat('en-US').format(stats.founderBalance)} tokens) scheduled for December 16th, 2024`
                               ) : (
                                 'Loading burn details...'
                               )}
