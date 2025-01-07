@@ -34,9 +34,9 @@ import { fetchTokenStats } from '@/lib/api'
 import { StatsContext, StatsContextType } from '@/contexts/StatsContext'
 
 const socialLinks = {
-  telegram: "https://t.me/SolBastardSOBA",
-  tiktok: "https://www.tiktok.com/@cryptobastard",
-  twitter: "https://x.com/cryptobastardTX",
+  telegram: "@bosabastard",
+  tiktok: "https://www.tiktok.com/@buck3835",
+  twitter: "https://x.com/OfBosa55539",
   dexscreener: "https://dexscreener.com/solana/26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG",
   dextools: "https://www.dextools.io/app/en/solana/pair-explorer/26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG",
   buy: "https://jup.ag/swap/SOL-26wx2UwenfvTS8vTrpysPdtDLyCfu47uJ44CpEpD1AQG",
